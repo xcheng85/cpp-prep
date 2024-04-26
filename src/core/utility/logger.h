@@ -2,8 +2,14 @@
 
 #include <iostream>
 #include <format>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
+
+// high_resolution_clock vs system_clock
+// high_resolution: not consistent across compiler
+// system_clock: UTC wall clock
 
 namespace core::utility
 {
@@ -28,13 +34,13 @@ namespace core::utility
             ERROR
         };
 
-        static ILogger& Instance();
+        static ILogger &Instance();
 
         inline void info(string_view s) override
         {
             if (_logLevel <= INFO)
             {
-                cout << format("[INFO]: {}", s) << "\n";
+                cout << format("[INFO {}]: {}", system_clock::now(), s) << "\n";
             }
         }
 
@@ -42,7 +48,7 @@ namespace core::utility
         {
             if (_logLevel <= WARN)
             {
-                cout << format("[WARN]: {}", s) << "\n";
+                cout << format("[WARN {}]: {}", system_clock::now(), s) << "\n";
             }
         }
 
@@ -50,7 +56,7 @@ namespace core::utility
         {
             if (_logLevel <= ERROR)
             {
-                cerr << format("[ERROR]: {}", s) << "\n";
+                cerr << format("[ERROR {}]: {}", system_clock::now(), s) << "\n";
             }
         }
 
@@ -58,7 +64,7 @@ namespace core::utility
         {
             if (_logLevel <= DEBUG)
             {
-                cout << format("[DEBUG]: {}", s) << "\n";
+                cout << format("[DEBUG {}]: {}", system_clock::now(), s) << "\n";
             }
         }
 

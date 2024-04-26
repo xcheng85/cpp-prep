@@ -2,13 +2,22 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "cpp-designer",
+        "name": "mt-basic",
         "type": "cppdbg",
         "request": "launch",
         "console": "integratedTerminal",
         "miDebuggerPath": "/usr/bin/gdb",
         "cwd": "${workspaceFolder}/build/bin",
         "program": "${workspaceFolder}/build/bin/multithreading/basic/mt-basic"
+      },
+      {
+        "name": "mt-raii",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/multithreading/raii/mt-raii"
       }
     ]
   }

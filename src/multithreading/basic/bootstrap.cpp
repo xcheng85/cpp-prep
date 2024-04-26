@@ -1,14 +1,14 @@
 #include <iostream>
-#include <memory>
+#include <assert.h>
+#include <memory> // smart pointer
 #include <chrono> // profiling
-#include <complex>
+#include <complex> // math complex
 #include <exception>
 #include <algorithm>
 #include <future> // task
-#include <iostream>
 #include <mutex>
-#include <assert.h>
-#include <thread>
+#include <thread> //jthread
+#include <functional> // std::ref
 
 using namespace std::chrono_literals;
 using namespace std::complex_literals;
@@ -73,7 +73,7 @@ public:
 
     void operator()(CriticalSection &c)
     {
-        // std::lock_guard<std::mutex> lockGuard(c.mut);
+        std::lock_guard lockGuard(c.mut);
         //  same as previous, c++17
         std::scoped_lock lock(c.mut);
         std::this_thread::sleep_for(200ms);
@@ -175,16 +175,18 @@ inline const auto &NumRenderPass(const RenderPass &p)
 // initialize static class member
 thread_local size_t RenderPass::callId = 0;
 
+// packing
 template <typename F, typename... Args>
 inline auto Async(F &&f, Args &&...args)
 {
     // force seperate thread
+    // unpacking
     return std::async(std::launch::async, std::forward<F>(f), std::forward<Args>(args)...);
 }
 
 auto f()
 {
-    std::this_thread::sleep_for(1s);
+    std::this_thread::sleep_for(10s);
     return 10;
 }
 
@@ -194,11 +196,18 @@ int main()
 {
     constexpr auto d1{250ms};
     std::complex<double> c = 1.0 + 1i;
+
     auto future = Async(f);
+    // future block call
+    std::cout << future.get() << "\n";
+
     // synchronization using lock
     CriticalSection c1;
+
+    // thread + functor who implements "void operator()(CriticalSection &c)"
+
     // functor copy into internal storage for the thread
-    std::thread t1(RenderPass("rp1", 1, true), std::ref(c1));
+    std::thread t1((RenderPass("rp1", 1, true)), std::ref(c1));
     std::thread t2(RenderPass("rp2", 2, false), std::ref(c1));
     std::thread t3(RenderPass("rp3", 3, true), std::ref(c1));
 
@@ -206,7 +215,7 @@ int main()
     RenderPass rp4{"rp4", 1, true};
     std::thread t4(std::ref(rp4), std::ref(c1));
 
-    // thread + member function
+    // thread + member function of instance
     std::thread t5(&RenderPass::run, &rp4);
     std::thread t6(&RenderPass::run, &rp4);
 

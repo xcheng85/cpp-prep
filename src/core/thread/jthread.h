@@ -15,15 +15,31 @@ namespace core::system
         jthread &operator=(const jthread &t) = delete;
 
         // must be enabled for stl container with noexcept
-        jthread(jthread &&t) noexcept {
+        jthread(jthread &&t) noexcept
+        {
+            // pay attention to the bug:
+            // need to clean the existed _t handle
+            if (_t.joinable())
+            {
+                _t.join();
+            }
+
             _t = std::move(t._t);
         }
-        jthread &operator=(jthread &&t) noexcept {
+        jthread &operator=(jthread &&t) noexcept
+        {
+            // pay attention to the bug:
+            // need to clean the existed _t handle
+            if (_t.joinable())
+            {
+                _t.join();
+            }
             _t = std::move(t._t);
             return *this;
         }
 
-        inline void join() {
+        inline void join()
+        {
             return _t.join();
         }
 

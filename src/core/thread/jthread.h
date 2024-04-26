@@ -8,6 +8,14 @@ namespace core::system
     {
     public:
         explicit jthread(std::thread &&t);
+
+        // perfect forwarding
+        template <typename F, typename... Args>
+        explicit jthread(F &&f, Args &&...args)
+            : _t(std::forward<F>(f), std::forward<Args>(args)...)
+        {
+        }
+
         virtual ~jthread();
         jthread() = delete;
         // resource handle _t, cannot copy but can move
@@ -40,7 +48,12 @@ namespace core::system
 
         inline void join()
         {
-            return _t.join();
+            return _t.detach();
+        }
+
+        inline void detach()
+        {
+            return _t.detach();
         }
 
     private:

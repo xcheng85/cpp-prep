@@ -68,6 +68,13 @@
         "forward_list": "cpp",
         "list": "cpp",
         "map": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "locale": "cpp",
+        "any": "cpp",
+        "filesystem": "cpp",
+        "stack": "cpp",
+        "__config": "cpp",
+        "ios": "cpp",
+        "queue": "cpp"
     }
 }

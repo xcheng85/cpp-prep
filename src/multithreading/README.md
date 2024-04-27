@@ -1,4 +1,81 @@
 # Multithreading in C++
+system-level concurrency: offered by os
+
+higher-level concurrency: go-routine
+
+memory-model of multi-threading
+
+## concept
+### 1. thread and task ? 
+thread is system representation of task
+
+### 2. conceptual level vs lower-level
+level level: thread, lock
+conceptual level: future, promise, packaged_task
+
+### 3. transfer ownership 
+
+### 4. each thread has its storage
+related to std::ref and std::cref
+thread local storage
+
+### 5. wait and not wait
+join: wait
+detach: daemon
+
+### 6. 
+
+
+## thread
+
+task in thread can be:
+1. function
+2. functor
+3. member function of instance
+4. lamda
+exception handling
+
+### Passing data into task of thread
+
+### fetching data from the task of thread
+pass non-const ref or pointer to the functor/function 
+
+std::cref
+std::ref
+
+### data race protection
+1. std::cout 
+
+mutex + lock (raii)
+
+raii lock: (template class) 
+1. lock_guard
+2. scoped_lock
+
+### scoped_lock vs lock_guard
+scoped_lock: variadic mutex, avoid deadlock
+
+### unique_lock vs lock_guard
+unique_lock: deferred locking and try-locking
+
+### multiple-reader and single writer
+
+
+## packaged_task and future + promise
+future: get value
+promise: set value/exception
+
+packaged_task: wrapper 
+
+## packaged_task vs async() launch
+async cannot use lock
+
+
+lock-free: atomic
+
+### atomic
+<atomic>
+template struct
 
 
 lock-free queue for inter-thread communication
@@ -7,7 +84,45 @@ Concurrent data processing:
 
 Concurrent task dispatch
 
+## Helpful from thread lib
+1. get the hardware core number
+2. thread id: std::thread::id, operator overload and hash are natively supported
+custom object as key of hashmap
 
+3. thread sleep
+
+## thread-safe container with lock 
+more than mutex and lock
+the interface of stl single-threaded version is quite limited 
+
+
+
+
+## Q&A
+
+
+### problem1: dangling pointer/reference in task of a thread
+
+### problem2: ways to wait for a thread
+
+1. join
+2. cv
+3. future
+
+### problem3: detach daemon thread use case
+1. monitoring filesystem
+2. clearing cache
+3. optimizing data structure
+4. open a vs code gui is a new detached thread of a same application
+
+### problem4: three ways to deal with data race
+1. lock-free programming
+2. mutex
+3. transaction
+
+### problem5: tricky for protecting shared data
+1. mutex + raii lock
+2. no return pointer to external: either caller or 3rd lib
 
 
 ## libraries

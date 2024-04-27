@@ -1,4 +1,5 @@
 add_library(thread jthread.cpp)
+
 target_link_libraries(thread PUBLIC utility)
 target_include_directories(thread PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"

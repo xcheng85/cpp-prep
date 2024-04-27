@@ -3,6 +3,7 @@
 #include <swapthreadsafe.h>
 #include <random>
 #include <logger.h>
+#include <dlistthreadsafe.h>
 
 using namespace core::container;
 using namespace core::system;
@@ -73,6 +74,7 @@ private:
 
 int main()
 {
+    srand(time(0));
     auto &logger = DefaultLogger::Instance();
     SwapObject o1{1}, o2{2};
     // single thread test
@@ -93,10 +95,30 @@ int main()
     logger.info(std::to_string(o1.data()));
     logger.info(std::to_string(o2.data()));
 
+    {
+        DListThreadSafe<int> dlist;
+        auto push_back = [&]()
+        {
+            dlist.push_back(rand());
+        };
+        auto threadGroup = CreateThreadGroup(NUM_THREADS, push_back);
+        for (auto &thread : threadGroup)
+        {
+            thread->join();
+        }
+        for (const auto &v : dlist)
+        {
+            if (v.val.has_value())
+            {
+                logger.info(std::to_string(v.val.value()));
+            }
+        }
+    }
+
     StackThreadSafe<int> stack(logger);
     // same_as concept
     // stack.emplace(1.0f);
-    srand(time(0));
+
     auto pushElement = [&]()
     {
         stack.push(rand());

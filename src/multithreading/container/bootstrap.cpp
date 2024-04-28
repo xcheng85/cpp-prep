@@ -4,6 +4,7 @@
 #include <random>
 #include <logger.h>
 #include <dlistthreadsafe.h>
+#include <mapthreadsafe.h>
 
 using namespace core::container;
 using namespace core::system;
@@ -112,6 +113,34 @@ int main()
             {
                 logger.info(std::to_string(v.val.value()));
             }
+        }
+    }
+
+    // multiple read and rare write case
+    {
+        MapThreadSafe<int, int> m;
+        auto mapAction = [&]()
+        {
+            if (rand() % 2 == 0)
+            {
+                logger.info("getvalue");
+                if (m.get(1).has_value())
+                {
+                    logger.info(std::to_string(m.get(1).value()));
+                } else {
+                    logger.info("cache miss");
+                }
+            }
+            else
+            {
+                logger.info("setvalue");
+                m.set(1, rand());
+            }
+        };
+        auto threadGroup = CreateThreadGroup(NUM_THREADS, mapAction);
+        for (auto &thread : threadGroup)
+        {
+            thread->join();
         }
     }
 

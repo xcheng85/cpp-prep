@@ -130,6 +130,15 @@ the interface of stl single-threaded version is quite limited
 1. singleton instance() // c++11 support
 2. third party: like db connection init //
 
+### problem7: single write and multiple read case
+#include <shared_mutex>
+
+shared_mutex
+shared_timed_mutex
+
+for write: lock_guard, scoped_lock 
+
+for read only: shared_lock
 
 ## libraries
 taskflow: dependency graph

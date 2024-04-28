@@ -19,21 +19,27 @@ int main(int argc, char **argv)
     QueueThreadSafe<std::string> stream;
 
     constexpr size_t NUM_CONSUMERS = 3;
-    constexpr size_t NUM_PRODUCERS = 2;
+    constexpr size_t NUM_PRODUCERS = 3;
     constexpr size_t NUM_STREAMTASK = 1;
 
     // use lamda to wrap around stream to add audit/observability
     const auto XGROUPCREATECONSUMER = [&]()
-    {
-        // generate consumerId based on the system clock
-        std::ostringstream os;
-        os << system_clock::now();
-        const auto consumerId = os.str();
-        logger.debug(consumerId);
+    {   
+        // mimic a consumer keep polling
+        while (true)
+        {
+            // generate consumerId based on the system clock
+            std::ostringstream os;
+            os << system_clock::now();
+            const auto consumerId = os.str();
+            logger.debug(consumerId);
 
-        std::string streamTaskId;
-        stream.bpop(streamTaskId);
-        logger.debug(std::format("{} assigned stream task: {}", consumerId, streamTaskId));
+            std::string streamTaskId;
+            stream.bpop(streamTaskId);
+            logger.debug(std::format("{} assigned stream task: {}", consumerId, streamTaskId));
+
+            std::this_thread::sleep_for(3s);
+        }
     };
 
     const auto XADD = [&]()

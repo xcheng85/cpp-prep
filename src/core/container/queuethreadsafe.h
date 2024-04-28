@@ -42,6 +42,15 @@ namespace core::container
             _cv.notify_one();
         }
 
+        // for only-movable object
+        void push(T &&v)
+        {
+            std::scoped_lock lock{_mux};
+            _container.push(std::move(v));
+            // any waiting thread of multiple threads
+            _cv.notify_one();
+        }
+
         bool empty() const
         {
             std::scoped_lock lock{_mux};
@@ -70,7 +79,9 @@ namespace core::container
             // receive notify_one, re-evaluate the predict
             _cv.wait(lock, [this]()
                      { return !_container.empty(); });
-            v = _container.front();
+
+            // pop anyway, I can move
+            v = std::move(_container.front());
             _container.pop();
         }
 

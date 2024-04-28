@@ -45,6 +45,15 @@
         "miDebuggerPath": "/usr/bin/gdb",
         "cwd": "${workspaceFolder}/build/bin",
         "program": "${workspaceFolder}/build/bin/multithreading/cv_consumergroup/mt-cv-consumergroup"
+      },
+      {
+        "name": "mt-packaged-task",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/multithreading/packaged_task/mt-packaged-task"
       }
     ]
   }

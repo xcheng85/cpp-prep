@@ -149,6 +149,37 @@ for read only: shared_lock
 pattern1: consumer group style, notify_one
 pattern2: pub-sub style, notify_all
 
+### problem 9: future vs threads. 
+use bpop in thread-safe queue as example: 
+
+1. thread-based impl: cv, unique_lock, wait, predict
+2. task-based impl: future and blocking get call.
+
+
+
+future with global func
+future with linstance function
+future with functor
+future with lamda
+
+### problem 10: building block of task management scheme (use case async streaming texture)
+packaged_task<>: tie future to a function or functor
+parallel mode: std::launch::async
+sequence mode: on a thread
+
+packaged_task: is the interface between task scheduler and the explict function
+
+
+packaged_task + thread_safe_queue: 
+
+main thread: load gltf and use packaged_task to submit the reading texture requests
+
+streaming thread (>=1): access the task from the queue and execute and store the result and 
+be retrieved by get_future().
+
+
+
+
 ## libraries
 taskflow: dependency graph
 

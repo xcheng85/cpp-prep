@@ -8,7 +8,7 @@ namespace core::db
         return singleton;
     }
 
-    std::unique_ptr<DBClient> DBInstance::connect(std::string_view connectionString)
+    std::unique_ptr<DBClient> DBInstance::createClient(std::string_view connectionString)
     {
         _logger.info(connectionString);
         return std::make_unique<DBClient>(connectionString);

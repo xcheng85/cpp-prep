@@ -2,6 +2,7 @@
 
 namespace core::utility
 {
+    // thread-safe after c++11
     ILogger &DefaultLogger::Instance()
     {
         static DefaultLogger instance;

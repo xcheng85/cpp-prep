@@ -59,7 +59,7 @@ public:
         for (int i = 0; i < _numThreads; ++i)
         {
             std::thread t{
-                &DBInstance::connect,
+                &DBInstance::createClient,
                 &_db,
                 format("connectionString_{}", i)};
             _threadPool.emplace_back(core::system::jthread(move(t)));

@@ -95,7 +95,9 @@ custom object as key of hashmap
 more than mutex and lock
 the interface of stl single-threaded version is quite limited 
 
+### stack
 
+### double-linked-list
 
 
 ## Q&A
@@ -123,6 +125,10 @@ the interface of stl single-threaded version is quite limited
 ### problem5: tricky for protecting shared data
 1. mutex + raii lock
 2. no return pointer to external: either caller or 3rd lib
+
+### problem6: thread-safe initialization issues
+1. singleton instance() // c++11 support
+2. third party: like db connection init //
 
 
 ## libraries

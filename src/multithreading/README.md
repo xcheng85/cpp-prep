@@ -140,6 +140,15 @@ for write: lock_guard, scoped_lock
 
 for read only: shared_lock
 
+### problem8: inter-thread communication
+1. busy check with lock
+2. check with sleep 
+3. cv and notify_one, notify_all
+#include <conditional_variable>
+
+pattern1: consumer group style, notify_one
+pattern2: pub-sub style, notify_all
+
 ## libraries
 taskflow: dependency graph
 

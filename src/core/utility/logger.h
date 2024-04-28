@@ -3,6 +3,7 @@
 #include <iostream>
 #include <format>
 #include <chrono>
+#include <source_location>
 
 using namespace std;
 using namespace std::chrono;
@@ -13,27 +14,34 @@ using namespace std::chrono;
 
 namespace core::utility
 {
+    enum LogLevel : int
+    {
+        DEBUG,
+        INFO,
+        WARN,
+        ERROR
+    };
     class ILogger
     {
     public:
         virtual ~ILogger() {}
+        inline void setLogLevel(LogLevel level)
+        {
+            _logLevel = level;
+        }
         virtual void info(string_view) = 0;
         virtual void warn(string_view) = 0;
         virtual void error(string_view) = 0;
-        virtual void debug(string_view) = 0;
+        virtual void debug(string_view, const std::source_location &location = std::source_location::current()) = 0;
+
+    protected:
+        static constexpr LogLevel sDefaultLogLevel{LogLevel::INFO};
+        LogLevel _logLevel{sDefaultLogLevel};
     };
 
     class DefaultLogger : private ILogger
     {
     public:
-        enum LogLevel : int
-        {
-            DEBUG,
-            INFO,
-            WARN,
-            ERROR
-        };
-
         static ILogger &Instance();
 
         inline void info(string_view s) override
@@ -60,11 +68,16 @@ namespace core::utility
             }
         }
 
-        inline void debug(string_view s)
+        inline void debug(string_view s, const std::source_location &location)
         {
             if (_logLevel <= DEBUG)
             {
-                cout << format("[DEBUG {}]: {}", system_clock::now(), s) << "\n";
+                cout << format("[DEBUG {} {} {} {}]: {}", system_clock::now(),
+                               location.file_name(),
+                               location.function_name(),
+                               location.line(),
+                               s)
+                     << "\n";
             }
         }
 
@@ -74,8 +87,5 @@ namespace core::utility
         DefaultLogger &operator=(const DefaultLogger &) = delete;
         DefaultLogger(DefaultLogger &&) = delete;
         DefaultLogger &operator=(DefaultLogger &&) = delete;
-
-        static constexpr LogLevel sDefaultLogLevel{LogLevel::INFO};
-        LogLevel _logLevel{DefaultLogger::sDefaultLogLevel};
     };
 }

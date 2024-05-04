@@ -164,11 +164,12 @@ future with lamda
 
 ### problem 10: building block of task management scheme (use case async streaming texture)
 packaged_task<>: tie future to a function or functor
+
 parallel mode: std::launch::async
+
 sequence mode: on a thread
 
 packaged_task: is the interface between task scheduler and the explict function
-
 
 packaged_task + thread_safe_queue: 
 
@@ -176,6 +177,8 @@ main thread: load gltf and use packaged_task to submit the reading texture reque
 
 streaming thread (>=1): access the task from the queue and execute and store the result and 
 be retrieved by get_future().
+
+### problem 11: value of promise
 
 
 

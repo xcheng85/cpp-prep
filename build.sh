@@ -8,9 +8,10 @@ then
 fi
 
 # generate cmake files
-cmake -B ./build -S . -DCMAKE_BUILD_TYPE=Debug
+cmake -B ./build -S . -DCMAKE_BUILD_TYPE=Debug 
 
 # compile project
 cmake --build ./build 
+#--clean-first
 
 echo compilation completed!

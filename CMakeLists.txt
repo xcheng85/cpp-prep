@@ -4,6 +4,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 #include cmake script
 include(CHECK_INSOURCE_BUILD)
+include(BOOST)
 
 # c++ version
 set(CMAKE_CXX_STANDARD 20)

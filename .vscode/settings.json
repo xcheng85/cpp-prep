@@ -75,6 +75,14 @@
         "stack": "cpp",
         "__config": "cpp",
         "ios": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "__bit_reference": "cpp",
+        "__string": "cpp",
+        "unordered_set": "cpp",
+        "__hash_table": "cpp",
+        "__split_buffer": "cpp",
+        "__tree": "cpp",
+        "source_location": "cpp",
+        "*.ipp": "cpp"
     }
 }

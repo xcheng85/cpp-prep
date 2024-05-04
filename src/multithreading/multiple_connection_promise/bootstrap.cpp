@@ -42,6 +42,7 @@ struct Request
     std::promise<HTTP_RESPONSE> promise;
     std::string reqId;
     bool hasIncomingData{false};
+    bool clientAbort{false};
     bool isDone{false};
 
     inline Request()
@@ -70,9 +71,19 @@ int main()
     {
         std::future<HTTP_RESPONSE> httpResponseFuture = req.promise.get_future();
         std::this_thread::sleep_for(10s);
-        req.hasIncomingData = true;
-        const auto httpResponse = httpResponseFuture.get();
-        logger.debug(std::format("client recieved response and its status code: {}", static_cast<int>(httpResponse)));
+        // req.hasIncomingData = true;
+        //  trigger promise exception
+        req.clientAbort = true;
+
+        try
+        {
+            const auto httpResponse = httpResponseFuture.get();
+            logger.debug(std::format("client recieved response and its status code: {}", static_cast<int>(httpResponse)));
+        }
+        catch (const std::exception &e)
+        {
+            ;
+        }
     };
 
     std::vector<std::jthread> clientThreads;
@@ -92,6 +103,13 @@ int main()
             if (req.isDone)
             {
                 continue;
+            }
+
+            if (req.clientAbort)
+            {
+                logger.debug(std::format("client: {} was disconnected", req.reqId));
+                req.promise.set_exception(std::make_exception_ptr(std::runtime_error("Client Abort")));
+                req.isDone = true;
             }
 
             if (req.hasIncomingData)

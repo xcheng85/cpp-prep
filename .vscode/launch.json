@@ -63,6 +63,15 @@
         "miDebuggerPath": "/usr/bin/gdb",
         "cwd": "${workspaceFolder}/build/bin",
         "program": "${workspaceFolder}/build/bin/multithreading/multiple_connection_promise/mt-connection-promise"
+      },
+      {
+        "name": "mt-shared-future-deps",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/multithreading/shared_future_deps/mt-shared-future-deps"
       }
     ]
   }

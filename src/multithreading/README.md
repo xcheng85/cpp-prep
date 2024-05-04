@@ -178,7 +178,30 @@ main thread: load gltf and use packaged_task to submit the reading texture reque
 streaming thread (>=1): access the task from the queue and execute and store the result and 
 be retrieved by get_future().
 
-### problem 11: value of promise
+### problem 11: one thread handle multiple promises with exception
+
+### problem 12: shared_future to handle task dependencies (multiple)
+
+future: blocking once
+future can support
+a -> c
+b -> c 
+
+c will wait for two futures
+
+
+
+assume following dependency graph: (future cannot support)
+
+a->b
+a->c
+
+b depends on a 
+c depends on a
+
+need a shared future (copy) to thread of b and c
+
+
 
 
 

@@ -98,14 +98,20 @@ int main()
     // inputAssembleReadyFuture must be copy to avoid data race
     auto vertexShaderTask = [&, inputAssembleReadyFuture]()
     {
+        logger.debug("init vertexShader");
+        while (inputAssembleReadyFuture.wait_for(seconds(1)) != future_status::ready)
+        {
+            logger.debug("vertexShader thread is waiting...");
+        }
+
         const auto inputAssembly = inputAssembleReadyFuture.get();
         logger.debug("run vertexShader");
     };
 
-    std::async(std::launch::async, prepareInputAssemblyTask);
     // 2 threads to mimic vertex processing
-    std::async(std::launch::async, vertexShaderTask);
-    std::async(std::launch::async, vertexShaderTask);
+    auto f3 = std::async(std::launch::async, prepareInputAssemblyTask);
+    auto f1 = std::async(std::launch::async, vertexShaderTask);
+    auto f2 = std::async(std::launch::async, vertexShaderTask);
 
     return 0;
 }

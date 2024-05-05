@@ -62,7 +62,11 @@ std::list<T> quickSort(std::list<T> input) // no const due to splice, no ref due
 
     // recursive, divide and conquer
     // avoid copy and also marks the lowerPart should not be used after next line.
-    auto sortedLowerPart{quickSort(std::move(lowerPart))};
+    // spawn task to do quicksort in different thread
+    // auto sortedLowerPart{quickSort(std::move(lowerPart))};
+    auto f = SpawnTask(quickSort<T>, std::move(lowerPart));
+    
+    // continue sort high part in current thread
     auto sortedHigherPart{quickSort(std::move(input))};
 
     // merge two sorted part with pivot
@@ -70,7 +74,8 @@ std::list<T> quickSort(std::list<T> input) // no const due to splice, no ref due
     // move after the pivot
     res.splice(res.end(), sortedHigherPart);
     // move before the pivot
-    res.splice(res.begin(), sortedLowerPart);
+    // blocking call to fetch the result from child thread.
+    res.splice(res.begin(), f.get());
     return res;
 }
 

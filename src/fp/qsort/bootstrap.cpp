@@ -10,6 +10,7 @@
 #include <functional>
 #include <vector>
 #include <list>
+#include <forward_list>
 #include <utility> // for std::pair
 #include <tuple>   // for std::tuple
 #include <random>
@@ -25,12 +26,14 @@ using namespace core::utility;
 // why list ?
 // the list.splice(move) between two lists can avoid copying
 
+// pure function
 template <typename T>
     requires three_way_comparable<T>
 std::list<T> quickSort(std::list<T> input) // no const due to splice, no ref due to splice
 {
     std::list<T> res;
 
+    // recursive end condition
     if (input.size() == 0)
     {
         return res;
@@ -70,13 +73,46 @@ std::list<T> quickSort(std::list<T> input) // no const due to splice, no ref due
     return res;
 }
 
+// in-place
+// a lot of side-effect, not a fp style
+template <typename Itr>
+void quickSortRange(Itr begin, Itr end)
+{
+    // recursive end condition
+    if (begin == end)
+    {
+        return;
+    }
+    // select the pivot
+    // select the middle point
+    // itr: arithmatic
+    // std::next is less-restrictive than operator++, consider the non-linear iterator type
+    auto pivot = *std::next(begin, std::distance(begin, end) / 2);
+    auto partitionItr = std::partition(begin, end,
+                                       [&](const auto &v)
+                                       {
+                                           return v < pivot;
+                                       });
+    // sort lower part
+    quickSortRange(begin, partitionItr);
+    // sort higher part
+    // strictly ignore the equal value
+    auto strictlyLargerItr = std::partition(partitionItr, end, [&](const auto &v)
+                                            { return pivot == v; });
+    quickSortRange(strictlyLargerItr, end);
+}
+
 int main()
 {
     auto &logger = DefaultLogger::Instance();
     logger.setLogLevel(LogLevel::DEBUG);
 
-    auto sorted{quickSort<int>({1, 30, -4, 3, 5, -4, 1, 6, -8, 2, -5, 64, 1, 92})};
-    std::copy(std::begin(sorted), std::end(sorted), std::ostream_iterator<int>(std::cout, " "));
+    // auto sorted{quickSort<int>({1, 30, -4, 3, 5, -4, 1, 6, -8, 2, -5, 64, 1, 92})};
+    // std::copy(std::begin(sorted), std::end(sorted), std::ostream_iterator<int>(std::cout, " "));
+
+    std::forward_list<int> unsorted({1, 30, -4, 3, 5, -4, 1, 6, -8, 2, -5, 64, 1, 92});
+    quickSortRange(unsorted.begin(), unsorted.end());
+    std::copy(unsorted.begin(), unsorted.end(), std::ostream_iterator<int>(std::cout, " "));
 
     return 0;
 }

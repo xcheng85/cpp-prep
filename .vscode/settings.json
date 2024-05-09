@@ -84,6 +84,15 @@
         "__tree": "cpp",
         "source_location": "cpp",
         "*.ipp": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "rope": "cpp",
+        "slist": "cpp",
+        "ranges": "cpp",
+        "stacktrace": "cpp",
+        "coroutine": "cpp",
+        "fstream": "cpp",
+        "valarray": "cpp",
+        "barrier": "cpp",
+        "latch": "cpp"
     }
 }

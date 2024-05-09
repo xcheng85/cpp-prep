@@ -83,6 +83,15 @@
         "program": "${workspaceFolder}/build/bin/multithreading/fp_concurrent/mt-fp-concurrent"
       },
       {
+        "name": "mt-csp",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/multithreading/csp/mt-csp"
+      },
+      {
         "name": "fp-quick-sort",
         "type": "cppdbg",
         "request": "launch",

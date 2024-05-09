@@ -5,6 +5,7 @@
 #include <queue>
 #include <condition_variable>
 #include <mutex>
+#include <concepts>
 #include <logger.h>
 
 namespace core::container
@@ -87,6 +88,55 @@ namespace core::container
 
     private:
         std::queue<T> _container;
+        mutable std::mutex _mux;
+        std::condition_variable _cv;
+    };
+
+    // queue stores pointer to leverage polymorphism
+    template <typename T>
+    class QueuePtrThreadSafe
+    {
+    public:
+        QueuePtrThreadSafe() = default;
+        QueuePtrThreadSafe(const QueuePtrThreadSafe &other)
+        {
+            if (this == &other)
+            {
+                return;
+            }
+
+            std::scoped_lock lock{other._mux};
+            _container = other._container;
+        }
+
+        QueuePtrThreadSafe &operator=(const QueuePtrThreadSafe &other) = delete;
+
+        template <derived_from<T> E, typename O>
+        void push(const O &v)
+        {
+            std::scoped_lock lock{_mux};
+            _container.push(std::make_shared<E>(v));
+            // any waiting thread of multiple threads
+            _cv.notify_one();
+        }
+        
+        bool empty() const
+        {
+            std::scoped_lock lock{_mux};
+            return _container.empty();
+        }
+
+        std::shared_ptr<T> wait_and_pop()
+        {
+            std::unique_lock lock{_mux};
+            _cv.wait(lock, [this]()
+                     { return !_container.empty(); });
+            auto res = _container.front();
+            _container.pop();
+            return res;
+        }
+    private:
+        std::queue<std::shared_ptr<T>> _container;
         mutable std::mutex _mux;
         std::condition_variable _cv;
     };

@@ -201,8 +201,15 @@ c depends on a
 
 need a shared future (copy) to thread of b and c
 
+### Concurrent programming paradiam
+1. FP
+2. CSP(Communication Sequential Processes) golang channel
+no shared data (no mutex)
+communication channel to pass messages
 
-
+## Concurrent programming with continuation
+javascript: 
+promise.then.catch
 
 
 

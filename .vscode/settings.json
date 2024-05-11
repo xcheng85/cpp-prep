@@ -93,6 +93,11 @@
         "fstream": "cpp",
         "valarray": "cpp",
         "barrier": "cpp",
-        "latch": "cpp"
+        "latch": "cpp",
+        "shared_mutex": "cpp",
+        "codecvt": "cpp",
+        "typeindex": "cpp",
+        "__locale": "cpp",
+        "__threading_support": "cpp"
     }
 }

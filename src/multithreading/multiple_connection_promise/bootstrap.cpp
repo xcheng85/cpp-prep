@@ -18,6 +18,8 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp> // to_string
 
+// using boost::asio::ip::tcp;
+
 using namespace std::chrono;
 using namespace core::utility;
 using namespace core::system;

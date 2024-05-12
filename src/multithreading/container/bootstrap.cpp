@@ -6,6 +6,7 @@
 #include <dlistthreadsafe.h>
 #include <mapthreadsafe.h>
 #include <finegrainedhashmapthreadsafe.h>
+#include <hetrogenousmap.h>
 
 using namespace core::container;
 using namespace core::system;
@@ -73,11 +74,20 @@ private:
     std::mutex _mutex;
     T _data;
 };
+struct A;
+struct B;
+struct Weight;
 
 int main()
 {
     srand(time(0));
     auto &logger = DefaultLogger::Instance();
+
+    using FParams = HetrogenousMap<A, B, Weight>;
+    auto data = FParams::Create().SetKV<A>(true).SetKV<B>(std::string("abc")).SetKV<Weight>(15);
+    cout << data.Get<A>() << std::endl;
+    cout << data.Get<B>() << std::endl;
+
     SwapObject o1{1}, o2{2};
     // single thread test
     constexpr size_t NUM_ITERATION = 100;
@@ -128,7 +138,9 @@ int main()
                 if (m.get(1).has_value())
                 {
                     logger.info(std::to_string(m.get(1).value()));
-                } else {
+                }
+                else
+                {
                     logger.info("cache miss");
                 }
             }
@@ -160,7 +172,7 @@ int main()
         thread->join();
     }
 
-    // test 
+    // test
 
     return 0;
 }

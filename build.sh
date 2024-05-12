@@ -8,7 +8,7 @@ then
 fi
 
 # generate cmake files
-cmake -B ./build -S . -DCMAKE_BUILD_TYPE=Debug 
+cmake -B ./build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CUDA_COMPILER=`which nvcc`
 
 # compile project
 cmake --build ./build 

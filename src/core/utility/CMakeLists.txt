@@ -1,4 +1,4 @@
-add_library(utility logger.cpp)
+add_library(utility logger.cpp helper.cpp)
 
 target_include_directories(utility PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"

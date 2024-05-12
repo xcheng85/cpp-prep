@@ -9,7 +9,7 @@ namespace core::container
     using namespace core::utility;
 
     template <typename T>
-    class DListThreadSafe
+    class ForwardListThreadSafe
     {
     public:
         struct DListNode

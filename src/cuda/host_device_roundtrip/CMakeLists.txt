@@ -4,6 +4,7 @@ set(LIB "${APP}_kernel")
 enable_language(CUDA)
 add_library(${LIB} kernel.cu kernel.h)
 set_target_properties(${LIB} PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+target_compile_definitions(${LIB} PUBLIC V2)
 
 target_link_libraries(${LIB} PUBLIC utility)
 target_include_directories(${LIB} PUBLIC

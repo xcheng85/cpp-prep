@@ -6,10 +6,9 @@
 #include <thrust/host_vector.h>
 #include <logger.h>
 
-
 using namespace std::chrono;
 using namespace core::utility;
-extern float run_kernel_reduce_v1(thrust::host_vector<float> &);
+extern float run_kernel_reduce(thrust::host_vector<float> &);
 int main(int argc, char **argv)
 {
     auto &logger = DefaultLogger::Instance();
@@ -27,7 +26,7 @@ int main(int argc, char **argv)
     }
 
     logger.debug("before run_kernel_integrate");
-    auto res = run_kernel_reduce_v1(vHost);
+    auto res = run_kernel_reduce(vHost);
     logger.debug(std::format("after run_kernel_integrate, res: {}", res));
     return 0;
 }

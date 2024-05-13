@@ -1,1 +1,2 @@
 add_subdirectory(numeric_integration)
+add_subdirectory(host_device_roundtrip)

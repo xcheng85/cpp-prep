@@ -21,4 +21,4 @@ __host__ __device__ inline float sinAtX(float x, int numTerms)
     return sum;
 }
 
-void run_kernel_integrate(int blocks, int threadsInBlock, int numSteps, int numTerms, float stepSize);
+float run_kernel_integrate(int blocks, int threadsInBlock, int numSteps, int numTerms, float stepSize);

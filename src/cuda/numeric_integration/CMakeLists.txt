@@ -14,6 +14,6 @@ add_executable(${APP} bootstrap.cpp)
 
 # set_property(TARGET ${APP} 
 #              PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-target_link_libraries(${APP} PUBLIC utility thread container kernel)
+target_link_libraries(${APP} PUBLIC utility thread container kernel cuda)
 target_include_directories(${APP} PUBLIC .)
 target_compile_definitions(${APP} PRIVATE PROFILING)

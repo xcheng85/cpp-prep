@@ -99,6 +99,7 @@
         "typeindex": "cpp",
         "__locale": "cpp",
         "__threading_support": "cpp",
-        "syncstream": "cpp"
+        "syncstream": "cpp",
+        "expected": "cpp"
     }
 }

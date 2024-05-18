@@ -1,3 +1,4 @@
+add_subdirectory(algorithm)
 add_subdirectory(multithreading)
 add_subdirectory(core)
 add_subdirectory(fp)

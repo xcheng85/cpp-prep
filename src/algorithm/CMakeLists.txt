@@ -1,0 +1,3 @@
+include(GOOGLE_BENCHMARK)
+add_subdirectory(quickSelect)
+add_subdirectory(sorting)

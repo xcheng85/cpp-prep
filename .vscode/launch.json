@@ -99,6 +99,16 @@
         "miDebuggerPath": "/usr/bin/gdb",
         "cwd": "${workspaceFolder}/build/bin",
         "program": "${workspaceFolder}/build/bin/fp/qsort/fp-quick-sort"
+      },
+      {
+        "name": "quick-select",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/algorithm/quickSelect/example/quickSelect-example",
+        "args": ["2"]
       }
     ]
   }

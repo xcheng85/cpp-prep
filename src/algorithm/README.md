@@ -2,15 +2,83 @@
 
 # Math
 
+## divisibility rules
+1 - 19
+https://www.geeksforgeeks.org/divisibility-rules/
+
 ## matrix
 
 ## number theory
+application: cryptography
+Hash functions
+
+integer factorization: 
+gcd
 
 ## geometry
 
-## Combinatorics
+## Combinatorics (brain teaser)
+https://www.geeksforgeeks.org/mathematics-combinatorics-basics/
+
+counting the number of available IPv4 or IPv6 addresses. 
+
+In how many ways can 3 winning prizes be given to the top 3 players in a game played by 12 players?  12 * 11 * 10
+
+### permutation vs combination ? 
+permutation: order matters
+combination: order does not matter
+
+N numbers number of permutation: N!
+
+### r out of n permutation
+
+P(n, r): n!/(n-r)!
+
+### combination: unordered selection (r out of n) 
+An unordered selection of r elements from a set is called an r-combination. It is represented as C(n,r)
+
+duplication: N!
+
+C(n,r) = P(n, r) / r!
+
+### 二项式系数（binomial coefficient）
+![alt text](image.png)
+
+### 二项式定理(binomial theorem)
+![alt text](image-1.png)
+
+### 容斥原理(Principle of inclusion-exclusion)
+A∪B∪C = A+B+C - A∩B - B∩C - C∩A + A∩B∩C
 
 ## Probability and Statistics
+mean
+median
+mode
+Variance: Variance= ∑(Each value−Mean) 2 / Total number of values
+Standard Deviation = √Variance
+
+A or B
+exlusive: P(A ∪ B) = P(A) + P(B),
+un-exclusive: P(A ∪ B) = P(A) + P(B) – P(A ∩ B)
+
+A and B: 
+P(A ∩ B)=P(A)×P(B∣A)=P(B)xP(A∣B)
+
+Bayer rules (贝叶斯公式) 条件概率:
+application:
+Spam Filtering:
+Medical Diagnosis
+Marketing and Recommendation Systems: 
+Machine Learning
+Decision Making:
+A/B Testing
+
+P(A|B)=P(B|A)*P(A)/P(B)。
+
+例如：一座别墅在过去的 20 年里一共发生过 2 次被盗，别墅的主人有一条狗，狗平均每周晚上叫 3 次，在盗贼入侵时狗叫的概率被估计为 0.9，问题是：在狗叫的时候发生入侵的概率是多少？
+我们假设 A 事件为狗在晚上叫，B 为盗贼入侵，则以天为单位统计，P(A) = 3/7，P(B) = 2/(20*365) = 2/7300，P(A|B) = 0.9，按照公式很容易得出结果：P(B|A) = 0.9*(2/7300) / (3/7) = 0.00058
+另一个例子，现分别有 A、B 两个容器，在容器 A 里分别有 7 个红球和 3 个白球，在容器 B 里有 1 个红球和 9 个白球，现已知从这两个容器里任意抽出了一个红球，问这个球来自容器 A 的概率是多少?
+假设已经抽出红球为事件 B，选中容器 A 为事件 A，则有：P(B) = 8/20，P(A) = 1/2，P(B|A) = 7/10，按照公式，则有：P(A|B) = (7/10)*(1/2) / (8/20) = 0.875
 
 # DS
 
@@ -23,24 +91,34 @@ max_element(v.begin(), v.end()): return itr
 
 logging vector easy way: std::copy(std::begin(output), std::end(output), std::ostream_iterator<int>(std::cout, " "));
 
-
 ## string
 
 ## hashtable
+### custom hashtable
+1. hash template specialization
+2. operator== const overload
 
 ## pair 
 pair comparison is done in the first element
-
 
 ## pq (heap, adaptor)
 
 ## stack (adaptor)
 
 ## Hash Function
+c++
+stl: linear chaining
+
+hash value transformed to bucket index 
+
+more memory for less collision
+
+custom class with hash template speciailization (functor struct)
+
+custom class with hash: https://ianyepan.github.io/posts/cpp-custom-hash/
 
 ## linked list (include dlist)
 splice: move between two lists by range, avoid copy
-
 
 # Algorithm
 
@@ -57,15 +135,23 @@ without sorting
 lower bound nlgn
 
 ## Bucket Sort (linear)
+input: float between [0,1], distribution uniformly
+Number of Bucket: N
+
+floor(input * N) -> bucket
+sort in each bucket increasing order
+merge
 
 ## Radix Sort (linear)
+get the max value to determin how many bits
+integers or strings with fixed-size keys. 
+count sort from least significant bit to most significant bit
 
 ## Count Sort (linear)
 limited range of input values. 
 range of input values is small
 count the frequency of each distinct element
 use that information to place the elements
-
 
 ## Rejection Sampling
 

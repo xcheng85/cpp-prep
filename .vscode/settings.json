@@ -100,6 +100,7 @@
         "__locale": "cpp",
         "__threading_support": "cpp",
         "syncstream": "cpp",
-        "expected": "cpp"
+        "expected": "cpp",
+        "__node_handle": "cpp"
     }
 }

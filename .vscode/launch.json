@@ -109,6 +109,25 @@
         "cwd": "${workspaceFolder}/build/bin",
         "program": "${workspaceFolder}/build/bin/algorithm/quickSelect/example/quickSelect-example",
         "args": ["2"]
+      },
+      {
+        "name": "radix-sort",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/algorithm/sorting/linear/radixsort/example/radixsort-example",
+        "args": ["2"]
+      },
+      {
+        "name": "lc_63_uniquepath",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/algorithm/combinatorics/lc_62_uniquepath/combinatorics-lc_62"
       }
     ]
   }

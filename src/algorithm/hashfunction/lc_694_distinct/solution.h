@@ -3,10 +3,15 @@
 #include <utility>
 #include <set>
 #include <unordered_set>
+#include <unordered_map>
 #include <iterator>
 #include <algorithm>
 #include <iostream>
 #include <format>
+#include <string>
+#include <cmath>
+#include <cassert>
+// #include <assert>
 
 using namespace std;
 
@@ -51,8 +56,8 @@ public:
                 // hashResult ^= dx;
                 // hashResult ^= dy;
             }
-            //cout << hashResult << endl;
-            // string to hash
+            // cout << hashResult << endl;
+            //  string to hash
             return hash<string>{}(hashResult);
         }
     };
@@ -141,8 +146,8 @@ protected:
             // hashResult ^= dx;
             // hashResult ^= dy;
         }
-        //cout << hashResult << endl;
-        // string to hash
+        // cout << hashResult << endl;
+        //  string to hash
         return hashResult;
     }
 };

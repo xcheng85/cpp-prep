@@ -98,6 +98,9 @@ logging vector easy way: std::copy(std::begin(output), std::end(output), std::os
 s.compare(0, pattern.size(), pattern);
 == cstring's strcmp 
 
+comparision between string and c-string const char*
+1. compare, strncmp
+2. operator<=>, strcmp
 
 ## hashtable
 ### custom hashtable
@@ -165,7 +168,18 @@ use that information to place the elements
 ### Biconnected Graph
 Even after removing any vertex the graph remains connected.
 
-## Suffix Array
+
+
+## Suffix Array 
+efficient string processing
+
+### could be used to solve "LRS(Longest Repeating Substring)" 
+LRS = suffix array + LCP(longest common prefix)
+
+
+Pattern Searching algorithm
+They are very useful when performing a search in a database
+
 Suffix array is an extremely useful data structure, 
 string pattern match
 
@@ -173,6 +187,11 @@ stl string operator<=>
 // substring compare without copy ? 
 int compare (size_t pos, size_t len, const string& str) const;
 
+Longest Repeating Substring
+
+
+### LCP array
+­­kasai’s Algorithm for Construction of LCP array from Suffix Array
 
 
 ## Line Sweep
@@ -220,7 +239,9 @@ int compare (size_t pos, size_t len, const string& str) const;
 ## greedy
 
 ## trie
-
+### standard trie
+### compress trie
+### suffix trie
 
 tree
 

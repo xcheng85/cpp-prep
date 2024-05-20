@@ -12,12 +12,13 @@ struct suffix
 {
     // string s;
     const char *data;
-
+    int length; // string's length, for lcp
     int offset; // to the beginning of string, [0, s.size()-1]
     suffix() = delete;
-    suffix(const string &s, int offset)
+    suffix(const string &s, int length, int offset)
         : // s{s},
-          offset{offset}
+          offset{offset},
+          length{length}
     {
         data = s.data() + offset;
     }
@@ -30,7 +31,7 @@ struct suffix
 std::ostream &operator<<(std::ostream &os, const suffix &s)
 {
     // os << format("rank {}, {}\n", s.offset, s.s);
-    os << format("rank {}, {}\n", s.offset, s.data);
+    os << format("rank {}, fulllength {}, {}\n", s.offset, s.length, s.data);
     return os;
 }
 
@@ -47,7 +48,7 @@ vector<suffix> buildSuffixArray(const string &s)
     for (size_t i = 0; i < s.size(); ++i)
     {
         // res.emplace_back(s.substr(i), i);
-        res.emplace_back(s, i);
+        res.emplace_back(s, s.size(), i);
     }
     // sort: operator <
     sort(res.begin(), res.end());

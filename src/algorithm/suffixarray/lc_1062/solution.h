@@ -15,10 +15,12 @@ using namespace std;
 struct suffix
 {
     const char *data;
+    int length; // string's length, for lcp
     int offset; // to the beginning of string, [0, s.size()-1]
     suffix() = delete;
-    suffix(const string &s, int offset)
-        : offset{offset}
+    suffix(const string &s, int length, int offset)
+        : length{length},
+          offset{offset}
     {
         data = s.data() + offset;
     }
@@ -55,33 +57,28 @@ public:
         int res{0};
         for (size_t i = 1; i < sortedSuffix.size(); ++i)
         {
-            cout << sortedSuffix[i - 1].data << endl;
-            cout << sortedSuffix[i].data << endl;
-
-            cout << string(sortedSuffix[i - 1].data) << endl;
-            cout << string(sortedSuffix[i].data) << endl;
-
-            // res = std::max({res, largestCommonPrefixSize(
-            //                          string(sortedSuffix[i - 1].data),
-            //                          string(sortedSuffix[i].data))});
-            cout << string(sortedSuffix[i - 1].data) << endl;
+           // cout <<  format("i: {}, max: {}\n",i, res);
+            res = std::max({res, largestCommonPrefixSize(
+                                     sortedSuffix[i - 1].data, sortedSuffix[i - 1].length - sortedSuffix[i - 1].offset,
+                                     sortedSuffix[i].data, sortedSuffix[i].length) -
+                                     sortedSuffix[i].offset});
         }
         return res;
     }
 
 private:
-    int largestCommonPrefixSize(const string &s1, const string &s2)
+    int largestCommonPrefixSize(const char *s1, int length1, const char *s2, int length2)
     {
-        cout << format("lcp {}, {}\n", s1.size(), s2.size());
-        size_t n = std::min({s1.length(), s2.length()});
+       // cout << format("largestCommonPrefixSize {}, {}\n", s1, s2);
+        size_t n = std::min({length1, length2});
         for (size_t i = 0; i < n; ++i)
         {
-            if (s1[i] != s2[i])
+            if (*(s1 + i) != *(s2 + i))
             {
                 return i;
             }
         }
-        cout << format("lcp {}, {}, {}\n", s1, s2, n);
+        //cout << format("lcp {}, {}, {}\n", s1, s2, n);
         return n;
     }
 
@@ -90,7 +87,7 @@ private:
         vector<suffix> res;
         for (size_t i = 0; i < s.size(); ++i)
         {
-            res.emplace_back(s, i);
+            res.emplace_back(s, s.size(), i);
         }
         sort(res.begin(), res.end());
         return res;

@@ -93,6 +93,12 @@ logging vector easy way: std::copy(std::begin(output), std::end(output), std::os
 
 ## string
 
+### string compare pattern
+
+s.compare(0, pattern.size(), pattern);
+== cstring's strcmp 
+
+
 ## hashtable
 ### custom hashtable
 1. hash template specialization
@@ -153,11 +159,21 @@ range of input values is small
 count the frequency of each distinct element
 use that information to place the elements
 
-## Rejection Sampling
+## Rejection Sampling (data science and statistics domain)
 
-## Biconnected Component
+## Biconnected Component (hard)
+### Biconnected Graph
+Even after removing any vertex the graph remains connected.
 
 ## Suffix Array
+Suffix array is an extremely useful data structure, 
+string pattern match
+
+stl string operator<=>
+// substring compare without copy ? 
+int compare (size_t pos, size_t len, const string& str) const;
+
+
 
 ## Line Sweep
 

@@ -31,6 +31,26 @@ vector<T> nextGreaterElement(const vector<T> &elements)
 }
 
 // input: [2, 1, 2, 4, 3]
+// output: [-1, 2, -1, -1, 4]
+template <typename T>
+vector<T> previousGreaterElement(const vector<T> &elements)
+{
+    vector<T> res(elements.size());
+    stack<T> s;
+    // reverse
+    for (int i = 0; i < elements.size(); ++i)
+    {
+        while (!s.empty() && s.top() <= elements[i])
+        {
+            s.pop();
+        }
+        res[i] = s.empty() ? -1 : s.top();
+        s.push(elements[i]);
+    }
+    return res;
+}
+
+// input: [2, 1, 2, 4, 3]
 // output: [1, -1, -1, 3, -1]
 
 template <typename T>
@@ -40,6 +60,29 @@ vector<T> nextSmallerElement(const vector<T> &elements)
     stack<T> s;
     // size_t has problem
     for (int i = elements.size() - 1; i >= 0; --i)
+    {
+        // it is <=
+        while (!s.empty() && s.top() >= elements[i])
+        {
+            s.pop();
+        }
+        // case 3,4 and case 2
+        res[i] = s.empty() ? -1 : s.top();
+        s.push(elements[i]);
+    }
+    return res;
+}
+
+// input:   [2, 1, 2, 4, 3]
+// output: [-1, -1, 1, 2, 2]
+
+template <typename T>
+vector<T> previousSmallerElement(const vector<T> &elements)
+{
+    vector<T> res(elements.size());
+    stack<T> s;
+    // size_t has problem
+    for (int i = 0; i < elements.size(); ++i)
     {
         // it is <=
         while (!s.empty() && s.top() >= elements[i])
@@ -106,19 +149,32 @@ vector<T> nextSmallerOfNextGreaterElement(const vector<T> &elements)
 int main()
 {
     const auto nge = nextGreaterElement(vector<int>{2, 1, 2, 4, 3});
-
-    std::cout << "nge\n";
+    std::cout << "next greater\n";
     copy(begin(nge), end(nge),
          ostream_iterator<int>(std::cout, " "));
+    std::cout << "\n";
 
-    std::cout << "nse\n";
+    const auto pge = previousGreaterElement(vector<int>{2, 1, 2, 4, 3});
+    std::cout << "previous greater\n";
+    copy(begin(pge), end(pge),
+         ostream_iterator<int>(std::cout, " "));
+    std::cout << "\n";
+
+    std::cout << "next smaller\n";
     const auto nse = nextSmallerElement(vector<int>{2, 1, 2, 4, 3});
     copy(begin(nse), end(nse),
          ostream_iterator<int>(std::cout, " "));
+    std::cout << "\n";
+      std::cout << "next smaller\n";
 
-    std::cout << "nsnge\n";
-    const auto nsnge = nextSmallerOfNextGreaterElement(vector<int>{5, 1, 9, 2, 5, 1, 7});
-    copy(begin(nsnge), end(nsnge),
+    const auto pse = previousSmallerElement(vector<int>{2, 1, 2, 4, 3});
+    copy(begin(pse), end(pse),
          ostream_iterator<int>(std::cout, " "));
+    std::cout << "\n";  
+    
+    // std::cout << "nsnge\n";
+    // const auto nsnge = nextSmallerOfNextGreaterElement(vector<int>{5, 1, 9, 2, 5, 1, 7});
+    // copy(begin(nsnge), end(nsnge),
+    //      ostream_iterator<int>(std::cout, " "));
     return 0;
 }

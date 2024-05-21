@@ -169,7 +169,6 @@ use that information to place the elements
 Even after removing any vertex the graph remains connected.
 
 
-
 ## Suffix Array 
 efficient string processing
 
@@ -194,9 +193,18 @@ Longest Repeating Substring
 ­­kasai’s Algorithm for Construction of LCP array from Suffix Array
 
 
-## Line Sweep
+## Line Sweep (hard)
+computation geometry
 
-## Reservoir Sampling
+counting intersection pts
+
+closest pair
+
+
+## Reservoir Sampling vs Selective Sampling
+statistic area
+
+Reservoir sampling is a family of randomized algorithms for randomly choosing k samples from a list of n items, where n is either a very large or unknown number.
 
 ## Strongly Connected Component
 

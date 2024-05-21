@@ -128,6 +128,16 @@
         "miDebuggerPath": "/usr/bin/gdb",
         "cwd": "${workspaceFolder}/build/bin",
         "program": "${workspaceFolder}/build/bin/algorithm/combinatorics/lc_62_uniquepath/combinatorics-lc_62"
+      },
+      {
+        "name": "reservoirsampling",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/algorithm/reservoirsampling/example/reservoirsampling-example",
+        "args": ["100", "10"]
       }
     ]
   }

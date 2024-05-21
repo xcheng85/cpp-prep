@@ -129,6 +129,29 @@ custom class with hash: https://ianyepan.github.io/posts/cpp-custom-hash/
 ## linked list (include dlist)
 splice: move between two lists by range, avoid copy
 
+
+## Special: Monotonic Queue (low frequency)
+### application
+sliding window
+Solving dynamic programming problems such as LIS (longest increasing subsequence) and LDS (longest decreasing subsequence)
+
+### limitation: 
+only those that involve finding the maximum or minimum element in a specific order
+
+increasing monotonic queue: slide window min value
+
+decreasing monotonic queue: slide window max value
+
+
+## Special: Monotonic Stack
+### application: 
+next greater/smaller
+Finding Previous Greater Element
+Finding Maximum Area Histogram:
+Finding Maximum Area in Binary Matrix:
+Finding Sliding Window Maximum/Minimum:
+Expression Evaluation:
+
 # Algorithm
 
 ## STL algorithm
@@ -206,15 +229,18 @@ statistic area
 
 Reservoir sampling is a family of randomized algorithms for randomly choosing k samples from a list of n items, where n is either a very large or unknown number.
 
-## Strongly Connected Component
+## Strongly Connected Component (hard)
+search engine
+data science 
+network
 
-## Eulerian Circuit
+
+## Eulerian Circuit (hard)
+airline ticket 
 
 ## Randomized
 
-## Monotonic Queue
 
-## Monotonic Stack
 
 ## Data Stream
 

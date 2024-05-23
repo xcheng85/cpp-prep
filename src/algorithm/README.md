@@ -255,6 +255,15 @@ airline ticket
 ## enumeration
 
 ## backtracking
+hint: ask you return all the combination under a condition
+
+o(n!)
+
+1. n! unique number permutation [1, 2, 3]
+2. decisition tree
+3. recursive traversal n-tree
+
+
 
 ## sliding window
 
@@ -269,6 +278,15 @@ airline ticket
 ## sort
 
 ## dp
+duplicate subproblem
+dp is like a N-tree
+
+### remove duplicate problem == cut branches of N-tree
+
+### Top-down with memorization
+
+### Bottom-up 
+
 
 ## greedy
 

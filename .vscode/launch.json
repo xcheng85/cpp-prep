@@ -138,6 +138,24 @@
         "cwd": "${workspaceFolder}/build/bin",
         "program": "${workspaceFolder}/build/bin/algorithm/reservoirsampling/example/reservoirsampling-example",
         "args": ["100", "10"]
+      },
+      {
+        "name": "monotonic_stack",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/algorithm/monotonic/stack/monotonic-stack"
+      },
+      {
+        "name": "monotonic_histogramarea",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/algorithm/monotonic/histogramarea/monotonic-histogram"
       }
     ]
   }

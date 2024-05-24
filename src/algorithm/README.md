@@ -370,8 +370,21 @@ dist(src) = 0
 or fail
 
 ## DFS
+dfs == backtracking
 
 ## BFS
+hint: nearest distance
+
+
+trick: visited cache to avoid "go back"
+find the neighboring logic 
+
+bfs: all the same level advance at the same time, 
+
+## DFS vs BFS
+nearest distance: BFS 
+space complexity: dfs o(lgn) // stack frame
+                  bfs o(n/2) // all the leaf node
 
 ## binary search
 

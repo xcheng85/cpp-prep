@@ -8,8 +8,12 @@ using namespace std;
 int main()
 {
     ifstream fs("dummy2.txt"s);
-    ofstream os("dummy3.txt"s);
-    if (!fs.good() || !os.good())
+    // ofstream only has seekp for write
+    //ofstream os("dummy3.txt"s);
+    // trunc or app
+    // rw + truncate
+    fstream ios("dummy3.txt"s, ios_base::trunc | std::fstream::in | std::fstream::out );
+    if (!fs.good() || !ios.good())
     {
         cerr << "open dummy2.txt has error" << endl;
         return 1;
@@ -24,7 +28,14 @@ int main()
         string first, last, gender;
         ss >> first >> last >> gender;
         cout << first << "," << last << "," << gender << endl;
-        os << gender << " " << last << " " << first << "\n";
+        ios << gender << " " << last << " " << first << "\n";
+    }
+    // seekg: for read
+    //ios.seekg(0) // same
+    ios.seekg(0, ios_base::beg);
+    while (getline(fs, sLine))
+    {
+        cout << sLine << endl;
     }
     return 0;
 }

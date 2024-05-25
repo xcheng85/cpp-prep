@@ -12,6 +12,8 @@ class Peer
 {
 public:
     Peer() = delete;
+    Peer(const Peer&) = delete;
+    Peer(Peer&&) = delete;
     explicit Peer(const std::string &uid, const std::string &filePath)
         : _uid{uid},
           _filePath{filePath}

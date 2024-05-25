@@ -1,2 +1,3 @@
 add_subdirectory(namedpipe)
 add_subdirectory(messagequeue)
+add_subdirectory(shm)

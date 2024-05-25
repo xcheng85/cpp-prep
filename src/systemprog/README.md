@@ -1,5 +1,47 @@
 # All about system programming
 
+## io/file operation
+istream: cin, ifstream, isstringstream
+
+getline: any istream, customize delimiter
+
+sstringstream: both in and out
+
+## time auditing
+
+## os signal
+
+## os scheduler (realtime process)
+
+### containerization settings
+https://docs.docker.com/config/containers/resource_constraints/#configure-the-real-time-scheduler
+
+1. default CFS scheduler:
+The CFS is the Linux kernel CPU scheduler for normal Linux processes.
+
+2. real-time scheduler: make sure the host machine's kernel is configured correctly 
+configuring the kernel real-time scheduler
+
+
+
+--cpu-rt-runtime: set to the maximum number of microseconds reserved for real-time tasks per runtime period, run for 950000 microseconds for every 1000000-microsecond period, leaving at least 50000 microseconds available for non-real-time tasks
+
+--ulimit: The maximum real-time priority allowed for the container.
+
+linux capability:
+CAP_SYS_NICE: which allows the container to raise process nice values, set real-time scheduling policies, set CPU affinity, and other operations.
+
+RR_SCHED policy in k8s
+
+docker
+
+securityContext:
+      capabilities:
+        add:
+        - SYS_NICE
+
+
+
 ## ipc
 a lot copy back and forth between user-space and kernel-space
 
@@ -21,6 +63,14 @@ messageattributes: like vkInstanceDescription
 
 mode: write-only, read-only
 permission to acccess the message queue
+
+### shared memory
+no kernel involved
+need synchronization mech
+based on mmap, map a file to a memory
+
+### ipc in boost
+https://theboostcpplibraries.com/boost.interprocess
 
 ## memory
 

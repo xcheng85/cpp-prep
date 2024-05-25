@@ -1,5 +1,26 @@
 # All about system programming
 
+## ipc
+a lot copy back and forth between user-space and kernel-space
+
+### pipe
+### named pipe
+application: chat
+size limit: 4kb atomic guarentee
+
+### message queue (POSIX)
+system header: <mqueue.h>
+
+needs to link against: /usr/lib/x86_64-linux-gnu/librt.a
+
+number of messages in the queue
+byte size of each message
+
+message queue descriptor, like fd
+messageattributes: like vkInstanceDescription
+
+mode: write-only, read-only
+permission to acccess the message queue
 
 ## memory
 

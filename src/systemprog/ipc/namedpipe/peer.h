@@ -11,7 +11,8 @@ using namespace std;
 class Peer
 {
 public:
-    Peer(const std::string &uid, const std::string &filePath)
+    Peer() = delete;
+    explicit Peer(const std::string &uid, const std::string &filePath)
         : _uid{uid},
           _filePath{filePath}
     {

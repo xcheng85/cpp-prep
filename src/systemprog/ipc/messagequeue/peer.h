@@ -15,8 +15,11 @@ class Peer
 {
 public:
     // mqd_t: int, a handle
+    // mqd_t: invalid.uninitialized correctly
+    //Failed to send message out: Bad file descriptor
+    //Failed to receive message from remote peer: Bad file descriptor
     Peer(const std::string &uid, mqd_t local, mqd_t remote)
-        : _uid{uid}
+        : _uid{uid}, _local{local}, _remote{remote}
     {
     }
 

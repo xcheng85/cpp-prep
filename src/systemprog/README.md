@@ -1,5 +1,44 @@
 # All about system programming
 
+## enable coredump on ubuntu
+```shell
+ulimit -S -c unlimited
+sudo apt install systemd-coredump
+coredumpctl list
+coredumpctl info -1
+```
+
+## time choice
+boost
+posix api
+<time.h>
+
+c++ chrono:
+1. system_clock
+2. steady_clock
+3. high_resolution_clock
+
+## signal
+<signal.h>
+### list all the signals
+
+kill -l 
+15) SIGTERM   catchable (no coredump)
+9) SIGKILL     uncatchable (app cannot trap it)
+6) SIGABORT   terminate with core dump
+11) SIGSEGV   terminate with core dump
+
+
+
+application ignore a signal
+application catch(trap) a signal: 
+
+crashed, upload stack, instrumenting
+
+### send signal between processes
+
+
+
 ## io/file operation
 istream: cin, ifstream, isstringstream
 

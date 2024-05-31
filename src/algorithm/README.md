@@ -130,6 +130,7 @@ custom class with hash: https://ianyepan.github.io/posts/cpp-custom-hash/
 splice: move between two lists by range, avoid copy
 
 
+
 ## Special: Monotonic Queue (low frequency)
 ### application
 sliding window
@@ -263,9 +264,11 @@ o(n!)
 2. decisition tree
 3. recursive traversal n-tree
 
+## sliding window 
+hint: string-related problem
 
+two pointers and moving accordingly
 
-## sliding window
 
 ## simulation
 
@@ -273,7 +276,46 @@ o(n!)
 
 ## bit manipulation
 
-## two pointers
+0x0A
+0b00010001
+
+### c-style
+1. get the rightmost bit (bit algorithm)
+
+2. remove the rightmost bit 
+
+3. counting bit 1 in a number
+
+4. check one bit is 1 
+
+5. toggle one bit
+
+### c++ bitset style
+
+
+## two pointers (array)
+
+## two pointers (linked list)
+
+dummy header
+
+1. 合并两个有序链表 
+
+2. 链表的分解
+
+3. 合并 k 个有序链表
+
+4、寻找单链表的倒数第 k 个节点
+
+5、寻找单链表的中点
+
+6、判断单链表是否包含环并找出环起点
+
+7、判断两个单链表是否相交并找出交点
+
+condition for loop: 
+ if(fast == slow && fast && fast -> next != nullptr && fast -> next->next != nullptr) 
+       
 
 ## sort
 
@@ -387,6 +429,10 @@ space complexity: dfs o(lgn) // stack frame
                   bfs o(n/2) // all the leaf node
 
 ## binary search
+three form
+1. basic, search one element
+2. search left bound 
+3. search right bound
 
 ## segmentation tree.
 

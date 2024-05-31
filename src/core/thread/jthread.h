@@ -48,7 +48,7 @@ namespace core::system
 
         inline void join()
         {
-            return _t.detach();
+            return _t.join();
         }
 
         inline void detach()

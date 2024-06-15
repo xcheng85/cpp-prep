@@ -102,6 +102,13 @@ logging vector easy way: std::copy(std::begin(output), std::end(output), std::os
 
 ## string
 
+reverse() //reverse string in-place
+
+istringstream
+std::getline(stream, str, ".")
+
+string.reserve() // avoid reallocation
+
 ### string compare pattern
 
 s.compare(0, pattern.size(), pattern);
@@ -406,6 +413,7 @@ tree
 ### bitwise trie
 
 ## graph:
+边的方向表示「被依赖」关系
 
 在常规的算法题中，邻接表的使用会更频繁一些，主要是因为操作起来较为简单，但这不意味着邻接矩阵应该被轻视
 有向图
@@ -450,13 +458,40 @@ void backtrack(TreeNode *root) {
 }
 ```
 
-### cycle detection
+### cycle detection (DFS)
+循环依赖
+in the traverse code
+ // cyle detection first, then visited
+
+course schedule problem
 
 dfs + visited + path cache
 
+### cycle detection (BFS)
+queue keep degree0
+degree 0
+
+good: all nodes go rought degree 0
+bad: left nodes with degree >= 1
+
+extra ds: vector<int> indegree(numCourses, 0);
+
+
 ### union find
 
-### topology sorting
+### topology sorting (dfs)
+
+
+图中存在环，是无法进行拓扑排序的
+!循环依赖 + Order
+answer is not unique
+
+1. 判断一下题目输入的课程依赖是否成环，成环的话是无法进行拓扑排序的
+2. 后序遍历的结果进行反转，就是拓扑排序
+
+
+拓扑排序
+
 
 directed graph
 
@@ -467,6 +502,12 @@ BFS:
 3. srcs to travasersal, (0 -indegree nodes)
 4. all the neighbors push to queue, --degree
 5. success condition: processed node == all nodes
+
+### topology sorting (bfs)
+
+1. only indegree 0 node can be pushed to queue
+
+2. compare traversed node count for all the nodes, good: ==
 
 ### greedy-based shortest path
 
@@ -548,7 +589,11 @@ dfs == backtracking
 
 ## BFS
 
-hint: nearest distance
+a step difference == one level advancement in bFS
+
+hint: nearest distance, min change
+
+
 
 trick: visited cache to avoid "go back"
 find the neighboring logic

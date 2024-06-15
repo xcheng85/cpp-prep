@@ -6,5 +6,5 @@ using namespace std;
 int main(int argc, char **argv)
 {
     Solution s;
-    cout << s.longestRepeatingSubstring("aacaagtttacaagc") << endl;
+    cout << s.longestRepeatingSubstring("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") << endl;
 }

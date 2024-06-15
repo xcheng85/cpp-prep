@@ -37,7 +37,7 @@ struct suffix
 
 std::ostream &operator<<(std::ostream &os, const suffix &s)
 {
-    os << format("rank {}, {}\n", s.offset, s.data);
+    //os << format("rank {}, {}\n", s.offset, s.data);
     return os;
 }
 

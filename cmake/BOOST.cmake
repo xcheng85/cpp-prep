@@ -1,6 +1,6 @@
 include(FetchContent)
 
-set(BOOST_INCLUDE_LIBRARIES uuid thread program_options headers system filesystem asio regex algorithm serialization)
+set(BOOST_INCLUDE_LIBRARIES uuid thread program_options headers system filesystem asio regex algorithm serialization locale)
 set(BOOST_ENABLE_CMAKE ON)
 
 FetchContent_Declare(

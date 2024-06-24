@@ -5,6 +5,7 @@ class Solution
 public:
     // 1. get the last bit: n & 0x1
     //    get the 2nd last bet: (n >> 1) & 0x1
+
     // 2. write to a certain ith bit: res |= 1<<i
 
     // 0, 31 1 << 31
@@ -15,12 +16,12 @@ public:
 
     uint32_t reverseBits(uint32_t n)
     {
-        unsigned int mask = 1 << 31, res = 0;
+        unsigned int writemask = 1 << 31, res = 0;
         for (int i = 0; i < 32; ++i)
         {
             if (n & 1)
-                res |= mask;
-            mask >>= 1;
+                res |= writemask;
+            writemask >>= 1;
             n >>= 1;
         }
         return res;

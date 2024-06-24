@@ -50,7 +50,7 @@ vector<vector<int>> nSumTarget(vector<int> &nums, int n, int start, long target)
         for (int i = start; i < sz; i++)
         {
             vector<vector<int>>
-                sub = nSumTarget(nums, n-1,i + 1, target - nums[i]);
+                sub = nSumTarget(nums, n-1, i + 1, target - nums[i]);
             for (vector<int> &arr : sub)
             {
                 // (n-1)Sum 加上 nums[i] 就是 nSum

@@ -1,6 +1,8 @@
-// maintain the balacne of two pq: 1. min-queue 2. max-queue
+// maintain the balance of two pq: 1. min-queue 2. max-queue
 // 1. 两个堆中的元素之差不能超过 1
-// 2. large 堆的堆顶元素要大于等于 small 堆的堆顶元素。
+// 2. large 堆 (minHeap)的堆顶元素要大于等于 small 堆(maxHeap)的堆顶元素。
+
+// cut of reverse primyad, bottom-half is maxHeap, top-half reverse and is minHeap
 
 #include <vector>
 #include <string>
@@ -22,6 +24,7 @@ public:
 
     void addNum(int num)
     {
+        // add to top half
         if (_maxPQ_small.size() >= _minPQ_large.size())
         {
             // to add element to _minPQ_large
@@ -33,6 +36,7 @@ public:
         }
         else
         {
+            // add to bottom half
             // to add element to _maxPQ_small
             // must ensure the new min in _minPQ_large is in _maxPQ_small
             _minPQ_large.push(num);
@@ -54,7 +58,9 @@ public:
     }
 
 private:
+    // top half
     priority_queue<int, std::vector<int>, std::greater<>> _minPQ_large;
+    // bottom half
     priority_queue<int, std::vector<int>, std::less<>> _maxPQ_small;
 };
 

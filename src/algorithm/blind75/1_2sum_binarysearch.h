@@ -39,7 +39,6 @@ public:
         int l, int r,
         int target)
     {
-
         while (l <= r)
         {
             int mid = l + (r - l) / 2;

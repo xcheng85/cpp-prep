@@ -20,8 +20,6 @@ public:
 
     void dfs(vector<vector<char>>& board, int i, int j, string word,
              int wordIdx, bool& matched, unordered_set<int>& path ) {
-                
-
         int m = board.size();
         int n = board[0].size();
         if (wordIdx == word.size()) { 
@@ -37,11 +35,11 @@ public:
             return;
         }
 
-        // visited in the path, going backwards
-        int id = i * n + j;
-        if(path.count(id) > 0){
-            return;
-        }
+        // // visited in the path, going backwards
+        // int id = i * n + j;
+        // if(path.count(id) > 0){
+        //     return;
+        // }
 
         if(board[i][j] != word[wordIdx]) {
             // already mismatched

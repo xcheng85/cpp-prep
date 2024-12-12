@@ -23,7 +23,6 @@ public:
             // when to move left pointer
             // last element is non-negative contribution, just leave that one
             if (slidingSum < 0 || nums[r - 1] >= slidingSum) {
-                
                 slidingSum = nums[r - 1];
                 int tmp = l;
                 l = r - 1;

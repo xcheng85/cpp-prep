@@ -32,8 +32,21 @@ public:
             s.pop();
 
             auto tmp = curr->next;
+            // [1,2,3,4]: meets 
+            // last comparison is: n = 3, tmp = 3; n == tmp
+
+            // [1, 2, 3, 4, 5]:
+            // after one reorder op,  
+            // [1, 5, 2, 3, 4]
+            // after 2nd reorder
+            // [1, 5, 2, 4, 3]: 3 --> 4 and 4 --> 3, meet  n->next == tmp,
+
+            // last comparision, tmp = 2, n = 3, 
+
             if (n == tmp || n->next == tmp) {
                 // 结束条件，链表节点数为奇数或偶数时均适用
+
+                // only the 2nd to the last node in the original node needs reset next to null, becomes the new tail
                 n->next = nullptr;
                 break;
             }

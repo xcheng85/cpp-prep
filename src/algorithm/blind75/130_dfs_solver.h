@@ -8,6 +8,9 @@ using namespace std;
 // 先用 for 循环遍历棋盘的四边，用 DFS 算法把那些与边界相连的 O 换成一个特殊字符，
 // 比如 #；然后再遍历整个棋盘，把剩下的 O 换成 X，把 # 恢复成 O。这样就能完成题目的要求，时间复杂度 O(MN)。
 
+
+// the bottom region is not captured because it is on the edge of the board and cannot be surrounded.
+
 class Solution
 {
 public:

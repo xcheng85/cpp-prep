@@ -50,9 +50,9 @@ private:
         {
             return nullptr;
         }
-        TreeNode *root = new TreeNode(stoi(nodeVal));
-        root->left = preOrderTraversal(nodes);
-        root->right = preOrderTraversal(nodes);
+        TreeNode *curr = new TreeNode(stoi(nodeVal));
+        curr->left = preOrderTraversal(nodes);
+        curr->right = preOrderTraversal(nodes);
 
         return root;
     }

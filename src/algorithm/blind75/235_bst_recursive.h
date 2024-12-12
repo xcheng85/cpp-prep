@@ -8,11 +8,18 @@
  * };
  */
 
+        // // tricky part is this to simply
+        // if (p->val > q->val) {
+        //     // 保证 p->val <= q->val，便于后续情况讨论
+        //     return lowestCommonAncestor(root, q, p);
+        // }
+
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         if (root == NULL)
             return NULL;
+        // tricky part is this to simply
         if (p->val > q->val) {
             // 保证 p->val <= q->val，便于后续情况讨论
             return lowestCommonAncestor(root, q, p);

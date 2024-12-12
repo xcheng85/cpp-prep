@@ -15,8 +15,10 @@ public:
     string minWindow(string s, string t)
     {
         string res; // restore by start and len
+        // state to reproduce the final result
         int start = 0;
         int len = 0;
+        // optimal result
         int minStrLen = numeric_limits<int>::max();
 
         // state of sliding window
@@ -28,11 +30,11 @@ public:
         int l = 0, r = 0;
         while (r < s.size())
         {
-            char c = s[r];
-            r++;
+            char c = s[r++];
             // igore the counter if this char is not in the t
             if (need.count(c))
             {
+                // closer to the destination
                 windowCharCounter[c]++;
                 if (windowCharCounter[c] == need[c])
                     matchedCharWindow++;
@@ -45,7 +47,6 @@ public:
                 {
                     start = l;
                     len = r - l;
-
                     minStrLen = r-l;
                 }
                 // when to shift left

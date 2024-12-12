@@ -77,7 +77,6 @@ public:
         // hashmap for look up neighboring number
         // unionset needs 0, n-1 consecutive
         // handle duplicates
-
         unordered_map<int, int> hashmap;
         // use index offset to represent set
         UnionSet unionset(nums.size());
@@ -98,7 +97,7 @@ public:
             {
                 unionset.unionSets(i, hashmap[nums[i] + 1]);
             }
-             hashmap.insert(make_pair(nums[i], i));
+            hashmap.insert(make_pair(nums[i], i));
         }
         return unionset.getLargetSetSize();
     }

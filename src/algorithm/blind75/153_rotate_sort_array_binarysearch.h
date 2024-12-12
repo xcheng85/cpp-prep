@@ -1,3 +1,10 @@
+// rotated sorted array search
+
+// 1. find the sorted part, the answer is in the unsorted part
+
+// 2. a rotated sorted array, num[start] > num[end]
+num[mid]>=num[start] --> num[mid] > mid[end], out of order, 
+
 class Solution {
 public:
      int findMin(vector<int> &num) {
@@ -18,6 +25,8 @@ public:
 
             // because start >= end and then mid >= start
             // that means mid >= end, the vally is in the right side
+
+            // left side is sorted, 
             if (num[mid]>=num[start]) {
                 start = mid+1;
             } else {

@@ -7,10 +7,15 @@ using namespace std;
 
 class Solution {
 public:
+// starti < endi 
     int eraseOverlapIntervals(vector<vector<int>>& intervals) {
-           //边界相同并不算相交。
+        //边界相同并不算相交。
         // sorting based on the end 
         // intervals = [[1,2],[2,3],[3,4],[1,3]]
+
+// 1, 3
+// 2, 4
+
 
         // [1, 2] 
         //       [2, 3]

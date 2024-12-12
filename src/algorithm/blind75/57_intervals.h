@@ -1,18 +1,16 @@
 #include <vector>
 
-
-
 // In a concrete business context, this problem may be presented as follows: 
 // Suppose we have an array representing video watch times, 
 // where each segment consists of the start and stop times of a user watching a video.
 // The task is to calculate the total number of unique minutes watched across all the video segments.
 //  This is fundamentally the same question.
 
-
 using namespace std;
 
 class Solution {
 public:
+    // non-overlapping intervals intervals
     vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
         int n = intervals.size(), i = 0;
         vector<vector<int>> res;
@@ -52,6 +50,5 @@ public:
             i++;
         }
         res.push_back(newInterval);
-
     }
 };

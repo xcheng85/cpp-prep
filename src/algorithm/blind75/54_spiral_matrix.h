@@ -4,7 +4,6 @@
 using namespace std;
 
 // like simulation
-
 vector<int> spiralOrder(vector<vector<int>> &matrix)
 {
     int m = matrix.size(), n = matrix[0].size();
@@ -12,11 +11,8 @@ vector<int> spiralOrder(vector<vector<int>> &matrix)
     // 4 state in the state machine transfer
     
     // current state
-    
-    
     int upper_bound = 0, lower_bound = m - 1;
     int left_bound = 0, right_bound = n - 1;
-
 
     vector<int> res;
     // res.size() == m * n 则遍历完整个数组

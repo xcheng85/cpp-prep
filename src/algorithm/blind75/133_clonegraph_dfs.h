@@ -66,6 +66,7 @@ private:
 
         assert(!_originToClone.contains(curr));
         auto tmp = new Node(curr->val);
+        
         // 前序位置，克隆节点
         _originToClone[curr] = tmp;
 

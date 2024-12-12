@@ -7,12 +7,14 @@
 
 // every iteration, the subproblem exists the all the less previous dp
 
+#include <vector>
+using namespace std;
 
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
-        // dp[0], include first char
+        // dp[1], include first char
         // dp[n-1], consider all the characters
 
         // dp[i] 表示以 nums[i] 这个数结尾的最长递增子序列的长度。

@@ -27,6 +27,7 @@ public:
         size_t i = 0;
         while (i < s.size()) {
             size_t delim = s.find_first_of("#", i);
+            // this substr should left with 1 char which indicate length of coming stirng
             int length = stoi(s.substr(i, delim - i));
             // skip #
             string str = s.substr(delim + 1, length);

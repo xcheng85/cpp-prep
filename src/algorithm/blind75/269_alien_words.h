@@ -12,9 +12,11 @@ using namespace std;
 class Solution
 {
 public:
+    // word is lexi sorted. figure out the order by english character
     string alienOrder(vector<string> &words)
     {
         // 1. create vertex and edges
+        // all the nodes 
         unordered_set<int> nodes;
         for (const auto &w : words)
         {
@@ -28,6 +30,7 @@ public:
         vector<pair<int, int>> edges;
         for (int j = 1; j < words.size(); ++j)
         {
+            // w1 is prioer to w2 lexi 
             string w1 = words[j - 1];
             string w2 = words[j];
 
@@ -45,11 +48,14 @@ public:
                 else
                 {
                     //cout << w1[k] << " ---> " << w2[k] << endl;
+                    // this edge in the graph is directional, w1[k] ---> w2[k]
                     edges.push_back(make_pair(w1[k] - 'a', w2[k] - 'a'));
                     findEdge = true;
                     break;
                 }
             }
+            
+            // invalid graph, 
             if(!findEdge && l1 != l2) {
                 return "".
             }
@@ -57,6 +63,7 @@ public:
 
         // build the adj list
         map<int, vector<int>> adj;
+        
         // nodeIdx, indegree
         map<int, int> indegree;
         // initialize to be indegree for all the nodes

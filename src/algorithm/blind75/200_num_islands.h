@@ -30,7 +30,7 @@ public:
         }
         return res;
     }
-
+    // preorder traversal
     void dfs(vector<vector<char>> &grid, int i, int j, int m, int n)
     {
         // neighboring are left, right, up, down

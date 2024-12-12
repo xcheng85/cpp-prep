@@ -17,7 +17,7 @@ public:
         });
 
         if(intervals.size() == 0) {
-            return true;yy
+            return true;
         }
 
         vector<int> curr = intervals[0];

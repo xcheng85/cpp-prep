@@ -12,7 +12,7 @@
 // =2
 // ​
  
-
+// [0, n] is the input
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {

@@ -1,4 +1,8 @@
 #include <coroutine>
+#include <string>
+#include <iostream>
+
+using namespace std::string_literals; // for ""s
 
 // 1. traits: std::coroutine_traits
 
@@ -6,10 +10,16 @@
 
 // 3. rules to implement: return_void
 
-struct ReturnObjectType
+// 4. coroutine handle: for coroutine caller to use
+
+//
+
+// wrapper type around promise_type
+struct ReturnObjectWrapper
 {
     struct promise_type
     {
+        // minimum requirement
         void return_void() noexcept {}
 
         std::suspend_always initial_suspend() noexcept
@@ -24,15 +34,63 @@ struct ReturnObjectType
 
         void unhandled_exception() noexcept {}
 
-        ReturnObjectType get_return_object() noexcept {
+        ReturnObjectWrapper get_return_object() noexcept
+        {
             // another ctor
-            return ReturnObjectType{*this};
+            return ReturnObjectWrapper{*this};
         }
+
+        // extra saurce: string as contract
+        // responding to co_yield string_type
+        std::suspend_always yield_value(std::string msg) noexcept
+        {
+            // when yield the frame state is updated.
+            _msg = std::move(msg);
+            return {};
+        }
+
+        auto payload() noexcept{
+            return _msg;
+        }
+
+    private:
+        // coutrine frame state is here
+        std::string _msg;
     };
 
-    explicit ReturnObjectType(promise_type&) {
-
+    // static method of template class and copy ctor
+    explicit ReturnObjectWrapper(promise_type &promise)
+        : _handle{
+              std::coroutine_handle<promise_type>::from_promise(promise)}
+    {
     }
+
+    ~ReturnObjectWrapper() noexcept
+    {
+        if (!_handle)
+        {
+            _handle.destroy();
+        }
+    }
+
+    // for coroutine handle: here contract type is string
+    std::string get()
+    {
+
+        if (!_handle.done())
+        {
+            _handle.resume();
+        }
+        // coroutine handle is created through from_promise;
+        // so it is logical to access the payload
+        // promise can access 
+        return std::move(_handle.promise().payload());
+    }
+
+private:
+    // coroutine handle: specialization of template std::coroutine_handle
+    // it has resume, done, destroy
+    std::coroutine_handle<promise_type> _handle;
 };
 
 // /home/xcheng85/github.com/xcheng85/cpp-prep/src/coroutine/basic/bootstrap.cpp: In function ‘ReturnTypeDef corotineFunc()’:
@@ -48,12 +106,19 @@ struct ReturnObjectType
 // gmake[2]: *** [bin/coroutine/basic/CMakeFiles/coroutine-basic.dir/build.make:76: bin/coroutine/basic/CMakeFiles/coroutine-basic.dir/bootstrap.cpp.o] Error 1
 // gmake[1]: *** [CMakeFiles/Makefile2:4609: bin/coroutine/basic/CMakeFiles/coroutine-basic.dir/all] Error 2
 
-ReturnObjectType corotineFunc()
+ReturnObjectWrapper corotineFunc()
 {
+    // s requires string_literals
+    co_yield "Dametime"s;
+
     co_return;
 }
 
 int main()
 {
-    corotineFunc();
+    auto returnType = corotineFunc();
+
+    std::cout << returnType.get() << std::endl;
+
+    return 0;
 }

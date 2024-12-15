@@ -12,7 +12,9 @@ using namespace std::string_literals; // for ""s
 
 // 4. coroutine handle: for coroutine caller to use
 
-//
+// 5. yielding coroutine: has its specs
+
+// 6. waiting coroutine has its specs
 
 // wrapper type around promise_type
 struct ReturnObjectWrapper
@@ -42,20 +44,68 @@ struct ReturnObjectWrapper
 
         // extra saurce: string as contract
         // responding to co_yield string_type
-        std::suspend_always yield_value(std::string msg) noexcept
+        std::suspend_always yield_value(std::string payload) noexcept
         {
             // when yield the frame state is updated.
-            _msg = std::move(msg);
+            _coroutineToCaller = std::move(payload);
             return {};
         }
 
-        auto payload() noexcept{
-            return _msg;
+        const auto &coroutineToCaller() const noexcept
+        {
+            return _coroutineToCaller;
+        }
+
+        const auto &callerToCoroutine() const noexcept
+        {
+            return _callerToCoroutine;
+        }
+
+        auto &callerToCoroutine() noexcept
+        {
+            return _callerToCoroutine;
+        }
+
+        // transform payload (string type) to awaiter object
+        // awaiter object: must implement: await_ready, await_resume, await_suspend
+
+        // await_transfrom is the specs behind: co_await
+        auto await_transform(std::string)
+        {
+            struct awaiter
+            {
+                awaiter(promise_type &promise)
+                    : _promise(promise)
+                {
+                }
+
+                bool await_ready() const noexcept
+                {
+                    return true;
+                }
+
+                std::string await_resume() const noexcept
+                {
+                    return std::move(_promise.callerToCoroutine());
+                }
+
+                void await_suspend(std::coroutine_handle<promise_type>) const noexcept
+                {
+                }
+
+            private:
+                promise_type &_promise;
+            };
+
+            return awaiter(*this);
         }
 
     private:
         // coutrine frame state is here
-        std::string _msg;
+        // for yield coroutine:
+        std::string _coroutineToCaller;
+        // for wait coroutine:
+        std::string _callerToCoroutine;
     };
 
     // static method of template class and copy ctor
@@ -74,17 +124,24 @@ struct ReturnObjectWrapper
     }
 
     // for coroutine handle: here contract type is string
+    // get: one way communication from coroutine to the caller
     std::string get()
     {
-
         if (!_handle.done())
         {
             _handle.resume();
         }
         // coroutine handle is created through from_promise;
         // so it is logical to access the payload
-        // promise can access 
-        return std::move(_handle.promise().payload());
+        // promise can access
+        return std::move(_handle.promise().coroutineToCaller());
+    }
+
+    // put: one way communication from caller to the coroutine
+    void put(std::string payload)
+    {
+        // everything is going through coroutine handler
+        _handle.promise().callerToCoroutine() = std::move(payload);
     }
 
 private:
@@ -108,8 +165,11 @@ private:
 
 ReturnObjectWrapper corotineFunc()
 {
+    // co_await
+    const auto payload = co_await std::string{};
+
     // s requires string_literals
-    co_yield "Dametime"s;
+    co_yield payload;
 
     co_return;
 }
@@ -117,7 +177,9 @@ ReturnObjectWrapper corotineFunc()
 int main()
 {
     auto returnType = corotineFunc();
-
+    // wait coroutine
+    returnType.put("from Giannis to Dametime");
+    // yield coroutine
     std::cout << returnType.get() << std::endl;
 
     return 0;

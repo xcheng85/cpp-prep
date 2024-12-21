@@ -5,6 +5,76 @@ higher-level concurrency: go-routine
 
 memory-model of multi-threading
 
+
+## Journey of thread's sync primitives
+mutex (all kinds of) ---> generic lock (use of mutex easier) ---> conditional variable
+
+## RAII class in thread
+jthread: wrapper on top of std::thread
+
+
+lock_guard: wrapper on top of mutex, calling mutex.lock in ctor and unlock in dtor
+unique_lock: wrapper on top of mutex, not calling mutex.lock in ctor is an extra option
+
+scoped_lock: N mutex
+shared_lock: shared_mutex
+
+## Async Programming tool: coroutine (compare with javascript promise and golang's goroutine)
+
+communication channel from coroutine to the caller
+
+
+## Boost.asio
+1. network, low-level io
+2. sockets, timers, hostname resolution, fd, 
+
+### Boost.asio arch
+1. execucation context: deal with os: epoll, kqueue, iocp, eventloop
+
+io_context: thread-safe
+
+2. i/o object: real task
+
+### io context (low-level os)
+
+event loop
+
+exit when no busy
+
+how to keep it busy (== keep event looping forever, like a web server)
+
+### event-based concurrent design pattern: reactor and proactor
+reactor pattern explaination: grokking concurrency
+
+### reactor pattern
+
+demultiplex and dispatch synchronously (event queue)
+
+system call select (os dependent)
+
+### proactor pattern
+demultiplex and dispatch asynchronously
+
+
+### compare with node.js
+So node.js itself is an example of Reactor design pattern.
+
+Javascript programs written in node.js are examples of Proactor design pattern.
+
+### threading + boost asio 
+
+io context is thread-safe
+
+threading and concurrent programming are different dimensions
+
+single thread + single io context
+
+N threads + N io contexts
+
+N threads + 1 shared io context
+
+
+
 ## concept
 ### 1. thread and task ? 
 thread is system representation of task

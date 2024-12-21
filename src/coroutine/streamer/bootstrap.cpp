@@ -6,6 +6,7 @@
 #include <utility>
 #include <assert.h>
 #include <thread>
+#include <exception>
 
 using namespace std::string_literals; // for ""s
 using namespace std::chrono_literals;
@@ -29,7 +30,11 @@ struct AsyncStreamer
             return {};
         }
 
-        void unhandled_exception() noexcept {}
+        void unhandled_exception() noexcept
+        {
+            // exception to the frame state
+            _exception = std::current_exception();
+        }
 
         AsyncStreamer get_return_object() noexcept
         {
@@ -84,12 +89,17 @@ struct AsyncStreamer
 
                 CallerToCoroType await_resume() const noexcept
                 {
+                    if (_promise._exception)
+                    {
+                        std::rethrow_exception(_promise._exception);
+                    }
+
                     // must already passed the await_ready check
                     assert(_promise.callerToCoroutine().has_value());
                     // exchange return the old value and set the new value
                     // nullopt is for std::optional
-                    //return *_promise.callerToCoroutine();
-                   return *std::exchange(_promise.callerToCoroutine(), std::nullopt);
+                    // return *_promise.callerToCoroutine();
+                    return *std::exchange(_promise.callerToCoroutine(), std::nullopt);
                 }
 
                 void await_suspend(std::coroutine_handle<promise_type>) const noexcept
@@ -102,6 +112,8 @@ struct AsyncStreamer
 
             return awaiter(*this);
         }
+
+        std::exception_ptr _exception;
 
     private:
         // coutrine frame state is here
@@ -130,6 +142,10 @@ struct AsyncStreamer
     // get: one way communication from coroutine to the caller
     CoroToCallerType get()
     {
+        if (_handle.promise()._exception)
+        {
+            std::rethrow_exception(_handle.promise()._exception);
+        }
         if (!_handle.done())
         {
             _handle.resume();
@@ -254,6 +270,8 @@ struct NetworkClient
         std::optional<char> _callerToCoroutine;
         // for wait coroutine:
         std::string _coroutineToCaller;
+
+        std::exception_ptr _exception;
     };
 
     // static method of template class and copy ctor

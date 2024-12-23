@@ -51,16 +51,18 @@ int main()
         boost::asio::io_context ctx;
         // SIGINT: ctrl + c
         boost::asio::signal_set signals(ctx, SIGINT, SIGTERM);
+        const auto numThreads = std::thread::hardware_concurrency();
+        Server server(ctx, port, numThreads);
         signals.async_wait([&](
                                const boost::system::error_code &ec,
                                int signal)
                            {
-                if(!ec) {
-                    std::cout << "Signal recv: " << signal << std::endl;
-                }
-                ctx.stop(); });
-
-        Server server(ctx, port);
+                               if (!ec)
+                               {
+                                   std::cout << "Signal recv: " << signal << std::endl;
+                               }
+                               server.teardown();
+                           });
         ctx.run();
     }
     catch (std::exception &ex)

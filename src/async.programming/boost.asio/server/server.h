@@ -1,8 +1,11 @@
 #pragma once
 
 #include <memory>
+#include <assert.h>
 #include <boost/asio.hpp>
 #include <session.h>
+#include <acceptor.h>
+#include <thread>
 
 using namespace boost::asio::ip;
 using namespace boost::asio;
@@ -41,34 +44,36 @@ class Server
 {
 public:
     // 1. allocate an accepat socket and bind it to the tcp port
-    Server(io_context &ctx, uint32_t port)
-        : _acceptor(ctx, tcp::endpoint(tcp::v4(), port))
+    Server(io_context &ctx, uint32_t port, uint32_t numThreads)
+        : _ctx{ctx},
+          _acceptor(ctx, port)
     {
-        _accept();
+        _tearup(numThreads);
+    }
+
+    void teardown()
+    {
+        std::cout << "teardown" << std::endl;
+        _acceptor.teardown();
+        std::cout << "_ctx.stop" << std::endl;
+        _ctx.stop();
     }
 
 private:
-    void _accept()
+    void _tearup(uint32_t numThreads)
     {
-        // when a client connection completed, the callback will be triggerred.
+        assert(numThreads);
 
-        // the recursive shows the pattern for constant listening.
+        for (int i = 0; i < numThreads; i++)
+        {
+            _threadPool.emplace_back(std::make_unique<std::jthread>([&]()
+                                                                    { _ctx.run(); })
 
-        // when you open an acceptor, you're asking the OS for a socket and saving the descriptor to a member variable.
-        // here you see why there is a socket in the callback signature
-
-        // 2. init the async accept operation
-        _acceptor.listen();
-        _acceptor.async_accept([this](boost::system::error_code errorCode, tcp::socket socket)
-                               {
-            if (!errorCode) {
-                // socket ownership transfer
-                // 4. 
-                std::make_shared<Session>(std::move(socket))->initRead();
-            }
-            // 3. when the async accept operation completes, init new one for the next request
-            _accept(); });
+            );
+        }
     }
 
-    tcp::acceptor _acceptor;
+    Acceptor _acceptor;
+    std::vector<std::unique_ptr<std::jthread>> _threadPool;
+    io_context &_ctx;
 };

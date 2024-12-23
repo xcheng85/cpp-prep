@@ -7,6 +7,16 @@
 using namespace boost::asio::ip;
 using namespace boost::asio;
 
+// summary of all steps in order for tcp server async (back-end forth between client-server)
+
+// 1.
+// 2.
+// 3.
+// 4.when the async accept operation completes, init new one for the next request
+// 5. init the asyn reading to read request from the connected client
+// 6. when the asyn reading completes, process the request and prepare the response
+// 7. when the async writing completes, switch to 5.
+
 // server develop elements and steps summary.
 // 1. socket: open a socket with socket(); opening a file, and you get an integer descriptor you can use with read(), write(), close() etc.
 // 2. bind the socket to a network address with bind()
@@ -30,6 +40,7 @@ using namespace boost::asio;
 class Server
 {
 public:
+    // 1. allocate an accepat socket and bind it to the tcp port
     Server(io_context &ctx, uint32_t port)
         : _acceptor(ctx, tcp::endpoint(tcp::v4(), port))
     {
@@ -45,12 +56,17 @@ private:
 
         // when you open an acceptor, you're asking the OS for a socket and saving the descriptor to a member variable.
         // here you see why there is a socket in the callback signature
+
+        // 2. init the async accept operation
+        _acceptor.listen();
         _acceptor.async_accept([this](boost::system::error_code errorCode, tcp::socket socket)
                                {
             if (!errorCode) {
                 // socket ownership transfer
-                std::make_shared<Session>(std::move(socket))->init();
+                // 4. 
+                std::make_shared<Session>(std::move(socket))->initRead();
             }
+            // 3. when the async accept operation completes, init new one for the next request
             _accept(); });
     }
 

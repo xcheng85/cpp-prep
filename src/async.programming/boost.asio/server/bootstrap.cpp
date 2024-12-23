@@ -49,6 +49,17 @@ int main()
     try
     {
         boost::asio::io_context ctx;
+        // SIGINT: ctrl + c
+        boost::asio::signal_set signals(ctx, SIGINT, SIGTERM);
+        signals.async_wait([&](
+                               const boost::system::error_code &ec,
+                               int signal)
+                           {
+                if(!ec) {
+                    std::cout << "Signal recv: " << signal << std::endl;
+                }
+                ctx.stop(); });
+
         Server server(ctx, port);
         ctx.run();
     }

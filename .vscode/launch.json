@@ -156,6 +156,15 @@
         "miDebuggerPath": "/usr/bin/gdb",
         "cwd": "${workspaceFolder}/build/bin",
         "program": "${workspaceFolder}/build/bin/algorithm/monotonic/histogramarea/monotonic-histogram"
+      },
+      {
+        "name": "asio_tcp_server",
+        "type": "cppdbg",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/async.programming/boost.asio/server/boost.asio-server"
       }
     ]
   }

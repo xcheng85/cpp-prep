@@ -1,6 +1,9 @@
 include(FetchContent)
 
-set(BOOST_INCLUDE_LIBRARIES uuid thread program_options headers system filesystem asio cobalt regex algorithm serialization locale)
+#set(BOOST_INCLUDE_LIBRARIES uuid thread program_options headers system filesystem asio cobalt regex algorithm serialization locale)
+
+set(BOOST_INCLUDE_LIBRARIES thread program_options asio cobalt regex algorithm serialization locale)
+
 set(BOOST_ENABLE_CMAKE ON)
 
 FetchContent_Declare(
@@ -9,3 +12,4 @@ FetchContent_Declare(
   URL_MD5 893b5203b862eb9bbd08553e24ff146a
 )
 FetchContent_MakeAvailable(Boost)
+

@@ -2,6 +2,14 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "name": "CUDA C++: 0_vector_add",
+        "type": "cuda-gdb",
+        "request": "launch",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}/build/bin",
+        "program": "${workspaceFolder}/build/bin/cuda/0_vector_add/0_vector_add"
+      },
+      {
         "name": "mt-basic",
         "type": "cppdbg",
         "request": "launch",

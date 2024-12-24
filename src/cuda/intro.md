@@ -9,13 +9,6 @@ oop,
 generic
 versatile
 
-host
-device
-
-each thread block run on a single SM (streaming multiprocessors), shared memory and synch
-
-Thrust does all CUDA API calls for you. So while you can use Thrust algorithms on manually allocated memory or pass the memory from a thrust::device_vector to a kernel, you don't need cudaMalloc and cudaMemcpy,
-
 
 ## dev workflow
 1. code design and structuring: code part benifit from paralle, data deps, data races
@@ -25,11 +18,37 @@ Thrust does all CUDA API calls for you. So while you can use Thrust algorithms o
 5. kernel launch: async, hence need sync primitives
 6. debugging and profiling
 
+### GPU Arch
+
+thread hieracrchy
+
+warp/block scheduling: block is on 1 SM, which is deviced by warp size
+
+CUDA core: SP (streaming processor): arithmatic/logic ops
+
+SM (streaming multi-processors): multiple sp, warp(SIMD) schedulers, special-function units and load/store units (memory)
+
+host
+device
+
+each thread block run on a single SM (streaming multiprocessors), shared memory and synch
+
+Thrust does all CUDA API calls for you. So while you can use Thrust algorithms on manually allocated memory or pass the memory from a thrust::device_vector to a kernel, you don't need cudaMalloc and cudaMemcpy,
+
 ## Memory
+
+### Global memory
+coalesced memory access: same as cpu-programming
+warp access contiguous memory locations
+
+### Readonly constant memory cachable
+  Total constant memory (Kbytes) 64.0
+
+### Readonly texture memroy cachable
+2d access, interpolation addressmodes
 
 ### Memory Program persp
 cudaMalloc, cudafree, cudaMemcpy all could be hidden using Thrust lib
-
 
 ### Memory performance
 global: off-chip
@@ -41,6 +60,8 @@ texture meory: cache readonly,
 ## warp: 32 threads exec simultanesuly by sm
 
 ### performance issue: warp divergence
+
+
 
 ## Unified Memory
 
@@ -61,6 +82,28 @@ accessible both by cpu and gpu
 
 ## Synchronization primitive
 cpu-gpu device sync 
+
+
+## performance
+
+### Goal
+Higher occupancy: higher ratio of active warps / max number of warps
+
+### What can affect concurrency (resource constraints)
+
+
+number of register per thread,
+shared memroy per block
+max number of threads per block
+
+1. register and shared memory not available
+  Max Registers per block 65536.0
+  Max Registers per SM 65536.0
+
+
+  Max Threads per block 1024.0
+  Max Threads per SM 1536.0
+  SM count: 76
 
 ## debugging
 

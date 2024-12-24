@@ -22,10 +22,15 @@ namespace core::cuda
                    prop.memoryBusWidth);
             printf("  Peak Memory Bandwidth (GB/s): %.1f\n",
                    2.0 * prop.memoryClockRate * (prop.memoryBusWidth / 8) / 1.0e6);
-            printf("  SM count: %d\n", prop.multiProcessorCount);
+
             printf("  Total global memory (Gbytes) %.1f\n", (float)(prop.totalGlobalMem) / 1024.0 / 1024.0 / 1024.0);
+            printf("  Total constant memory (Kbytes) %.1f\n", (float)(prop.totalConstMem) / 1024.0);
             printf("  Shared memory per block (Kbytes) %.1f\n", (float)(prop.sharedMemPerBlock) / 1024.0);
             printf("  Max Threads per block %.1f\n", (float)(prop.maxThreadsPerBlock));
+            printf("  Max Threads per SM %.1f\n", (float)(prop.maxThreadsPerMultiProcessor));
+            printf("  Max Registers per block %.1f\n", (float)(prop.regsPerBlock));
+            printf("  Max Registers per SM %.1f\n", (float)(prop.regsPerMultiprocessor));
+            printf("  SM count: %d\n", prop.multiProcessorCount);
             printf("  minor-major: %d-%d\n", prop.minor, prop.major);
             printf("  Warp-size: %d\n", prop.warpSize);
             printf("  Concurrent kernels: %s\n", prop.concurrentKernels ? "yes" : "no");

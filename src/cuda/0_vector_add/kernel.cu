@@ -5,18 +5,20 @@
 #include "kernel.h"
 
 // v1: to be overwritten
-__global__ void vectorAdd(float *v1, float *v2)
+__global__ void vectorAdd(float *v1, float *v2, int N)
 {
     int globalThreadId = blockDim.x * blockIdx.x + threadIdx.x;
     // two global memory access
     // debug in kernel
-    printf("calling kernel: %d\n", globalThreadId);
-    v1[globalThreadId] += v2[globalThreadId];
+    if (globalThreadId < N)
+    {
+        printf("calling kernel: %d\n", globalThreadId);
+        v1[globalThreadId] += v2[globalThreadId];
+    }
 }
 
 thrust::host_vector<float> runVectorAdd(thrust::host_vector<float> &v1,
                                         thrust::host_vector<float> &v2,
-                                        int numThreadBlocks,
                                         int numThreadsInBlock)
 {
     thrust::host_vector<float> res;
@@ -39,7 +41,8 @@ thrust::host_vector<float> runVectorAdd(thrust::host_vector<float> &v1,
 
     // stream 0
     cudaEventRecord(start, 0);
-    vectorAdd<<<numThreadBlocks, numThreadsInBlock>>>(ptr1, ptr2);
+    int numBlocksPerGrid = (N + numThreadsInBlock - 1) / numThreadsInBlock;
+    vectorAdd<<<numBlocksPerGrid, numThreadsInBlock>>>(ptr1, ptr2, N);
     cudaEventRecord(stop, 0);
     // Waits for an event to complete.
     cudaEventSynchronize(stop);
@@ -47,7 +50,7 @@ thrust::host_vector<float> runVectorAdd(thrust::host_vector<float> &v1,
     float elapsedTimeInMs;
     cudaEventElapsedTime(&elapsedTimeInMs, start, stop);
 
-    std::cout << "kernel runs: " << elapsedTimeInMs << " ms "<< std::endl;
+    std::cout << "kernel runs: " << elapsedTimeInMs << " ms " << std::endl;
 
     res = v1Device;
     return res;

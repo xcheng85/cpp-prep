@@ -37,7 +37,7 @@ Thrust does all CUDA API calls for you. So while you can use Thrust algorithms o
 
 ## Memory
 
-### Global memory
+### Global memory (non-cachable, large datasets)
 coalesced memory access: same as cpu-programming
 warp access contiguous memory locations
 

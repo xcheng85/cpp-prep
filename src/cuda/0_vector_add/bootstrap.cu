@@ -15,6 +15,7 @@ using namespace core::cuda;
 
 extern float run_kernel_reduce(thrust::host_vector<float> &);
 
+
 int main(int argc, char **argv)
 {
     checkDevice();
@@ -22,11 +23,14 @@ int main(int argc, char **argv)
     thrust::host_vector<float> v1Host = {1, 2, 3, 4, 5};
     thrust::host_vector<float> v2Host = {1, 2, 3, 4, 5};
 
+    float scaleFactor[NUM_SCALEFACTOR] = {2.0f};
+    setScaleFactor(scaleFactor);
+
     //   Max Threads per block 1024.0
     // exceed 1024, fail the kernel
     auto res = runVectorAdd(v1Host, v2Host, 1024);
     // auto res = runVectorAdd(v1Host, v2Host, 2048);
-    
+
     CUDACHECK(cudaPeekAtLastError());
 
     // wait for gpu to finish

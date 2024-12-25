@@ -4,6 +4,13 @@
 #include <cuPredefines.h>
 #include "kernel.h"
 
+__constant__ float constScale[NUM_SCALEFACTOR];
+
+void setScaleFactor(const float *coeff)
+{
+    cudaMemcpyToSymbol(constScale, coeff, NUM_SCALEFACTOR * sizeof(float));
+}
+
 // v1: to be overwritten
 __global__ void vectorAdd(float *v1, float *v2, int N)
 {
@@ -14,6 +21,7 @@ __global__ void vectorAdd(float *v1, float *v2, int N)
     {
         printf("calling kernel: %d\n", globalThreadId);
         v1[globalThreadId] += v2[globalThreadId];
+        v1[globalThreadId] *= constScale[0];
     }
 }
 

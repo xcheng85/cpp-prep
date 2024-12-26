@@ -4,5 +4,5 @@ using namespace std;
 
 namespace core::cuda
 {
-    void checkDevice();
+    void selectDevice();
 }

@@ -1,8 +1,12 @@
 #include <algorithm>
 #include <assert.h>
+#include <thread>
+#include <chrono>
 #include <thrust/device_vector.h>
 #include <cuPredefines.h>
 #include "kernel.h"
+
+using namespace std::chrono;
 
 __constant__ float constScale[NUM_SCALEFACTOR];
 
@@ -14,6 +18,8 @@ void setScaleFactor(const float *coeff)
 // v1: to be overwritten
 __global__ void vectorAdd(float *v1, float *v2, int N)
 {
+    extern __shared__ float intermediates[];
+    // only supports 1d
     int globalThreadId = blockDim.x * blockIdx.x + threadIdx.x;
     // two global memory access
     // debug in kernel
@@ -27,7 +33,7 @@ __global__ void vectorAdd(float *v1, float *v2, int N)
 
 thrust::host_vector<float> runVectorAdd(thrust::host_vector<float> &v1,
                                         thrust::host_vector<float> &v2,
-                                        int numThreadsInBlock)
+                                        dim3 numThreadsInBlock)
 {
     thrust::host_vector<float> res;
     assert(v1.size() == v2.size());
@@ -44,13 +50,34 @@ thrust::host_vector<float> runVectorAdd(thrust::host_vector<float> &v1,
     float *ptr2 = thrust::raw_pointer_cast(&v2Device[0]);
 
     cudaEvent_t start, stop;
-    CUDACHECK(cudaEventCreate(&start));
-    CUDACHECK(cudaEventCreate(&stop));
-
+    cudaEventCreate(&start);
+    auto err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        std::cerr << cudaGetErrorString(err) << std::endl;
+    }
+    cudaEventCreate(&stop);
     // stream 0
     cudaEventRecord(start, 0);
-    int numBlocksPerGrid = (N + numThreadsInBlock - 1) / numThreadsInBlock;
-    vectorAdd<<<numBlocksPerGrid, numThreadsInBlock>>>(ptr1, ptr2, N);
+    dim3 numBlocksPerGrid((N + numThreadsInBlock.x - 1) / numThreadsInBlock.x);
+
+    // 2d
+    // dim3 numBlocksPerGrid(32, 32, 1);
+    int blockSize = 0;
+    int numBlocks = 0;
+    cudaOccupancyMaxPotentialBlockSize(&numBlocks, &blockSize, vectorAdd);
+    // Potential: 768, 152
+    std::cout << "Potential: " << blockSize << ", " << numBlocks << std::endl;
+
+    vectorAdd<<<numBlocksPerGrid, numThreadsInBlock, sizeof(float) * N>>>(ptr1, ptr2, N);
+    // GPU kernels are asynchronous with host by default
+    int numItr = 5;
+    while (numItr--)
+    {
+        std::cout << "cpu itr: " << numItr << std::endl;
+        std::this_thread::sleep_for(1s);
+    }
+
     cudaEventRecord(stop, 0);
     // Waits for an event to complete.
     cudaEventSynchronize(stop);

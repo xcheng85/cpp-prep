@@ -1,4 +1,4 @@
-#define CUDACHECK(err) do { cuda_check((err), __FILE__, __LINE__); } while(false)
+#define CUDA_CHECK(op) cuda_check(op, __FILE__, __LINE__);
 inline void cuda_check(cudaError_t error_code, const char *file, int line)
 {
     if (error_code != cudaSuccess)

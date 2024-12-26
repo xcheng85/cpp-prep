@@ -9,7 +9,6 @@ oop,
 generic
 versatile
 
-
 ## dev workflow
 1. code design and structuring: code part benifit from paralle, data deps, data races
 2. host and device code separation: execucation flow
@@ -17,6 +16,13 @@ versatile
 4. memory management: host and device memory and transfer back-forth
 5. kernel launch: async, hence need sync primitives
 6. debugging and profiling
+
+## cuda program concept
+1. c++ language extensions
+2. nvcc compiler
+3. cuda runtime(sdk), runtime api and driver api (more control)
+4. kernel written in c++ or PTX
+5. binary code is arch-specific
 
 ### GPU Arch
 
@@ -34,6 +40,18 @@ device
 each thread block run on a single SM (streaming multiprocessors), shared memory and synch
 
 Thrust does all CUDA API calls for you. So while you can use Thrust algorithms on manually allocated memory or pass the memory from a thrust::device_vector to a kernel, you don't need cudaMalloc and cudaMemcpy,
+
+## GPU arch in Nvidia
+
+Tesla: 2006 
+Fermi: 2010
+Kepler: 2012
+Maxwell: 2014 Unified memory, NVENC, video encoding
+Pascal: 2016, NVLINK, data transfer between GPUS, high bandwidth memory
+Volta: 2017, deep learning, Tensorcores 
+Turing: 2018, ray tracing, variable rate shading
+Ampere: 2020
+
 
 ## Memory
 
@@ -61,7 +79,9 @@ texture meory: cache readonly,
 
 ### performance issue: warp divergence
 
+### How to solve warp divergence ? 
 
+run two kernels to avoid if, else
 
 ## Unified Memory
 
@@ -77,11 +97,22 @@ accessible both by cpu and gpu
 ### sync shared memory within block
         __syncthreads();
 
+### DEADLOCK: syncthreads in conditional branch
+
+
 ## Thrust::universal
 
 
 ## Synchronization primitive
-cpu-gpu device sync 
+cpu-gpu device sync: cudaDeviceSynchronize()
+
+### coordinates between multiple streams
+
+wait for stream: cudaStreamSynchronize(stream)
+
+## Stream
+task scheduling, priority and sync
+cudaStreamCreate
 
 
 ## performance
@@ -160,3 +191,22 @@ cuFFT:
 cuRand: random numbers, simulations, monte carlo
 Thrust: 
 cuDNN
+
+
+## Sync & Async stream in Cuda
+All CUDA operations in the default stream are synchronous
+
+GPU kernels are asynchronous with host by default
+
+
+The programmer can also control loop unrolling using the #pragma unroll directive (see #pragma unroll).
+
+### Async: Pinned memory (staging memory in vulkan programming)
+
+// pinned memory required on host
+Host (CPU) data allocations are pageable by default. The GPU cannot access data directly from pageable host memory, so when a data transfer from pageable host memory to device memory is invoked, the CUDA driver must first allocate a temporary page-locked, or “pinned”, host array, copy the host data to the pinned array, and then transfer the data from the pinned array to device memory, as illustrated below.
+
+
+
+
+Samples/0_Introduction/**/*.cu

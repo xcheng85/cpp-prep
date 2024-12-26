@@ -7,6 +7,7 @@ add_library(${LIB} kernel.cu kernel.h)
 target_compile_options(${LIB} PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:
                       --allow-unsupported-compiler
                       -G
+                      # -gencode arch=compute_90,code=sm_90
                       >)
 
 set_target_properties(${LIB} PROPERTIES CUDA_SEPARABLE_COMPILATION ON)

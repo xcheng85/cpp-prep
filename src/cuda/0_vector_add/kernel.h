@@ -6,7 +6,7 @@
 thrust::host_vector<float> runVectorAdd(
     thrust::host_vector<float> &v1, 
     thrust::host_vector<float> &v2, 
-    int threadsInBlock // SM / warpsize
+    dim3 threadsInBlock // SM / warpsize
 );
 
 #define NUM_SCALEFACTOR 1

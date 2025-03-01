@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <variant>
 
 // operation extensible on Transaction
 namespace banking
@@ -112,49 +113,100 @@ namespace banking
         double _amount;
     };
 
-    class FilterTransactionByAccountId : public TransactionVisitor
+    namespace classic
     {
-    public:
-        FilterTransactionByAccountId(std::string accountId)
-            : _accountId{accountId}
+        class FilterTransactionByAccountId : public TransactionVisitor
         {
-        }
-
-        virtual void visit(const Withdraw &withdraw) const override
-        {
-            if (withdraw.accountId() == _accountId)
+        public:
+            FilterTransactionByAccountId(std::string accountId)
+                : _accountId{accountId}
             {
-                std::cout << "filter got one for withdraw !" << std::endl;
+            }
+
+            virtual void visit(const Withdraw &withdraw) const override
+            {
+                if (withdraw.accountId() == _accountId)
+                {
+                    std::cout << "filter got one for withdraw !" << std::endl;
+                }
+            }
+
+            virtual void visit(const Deposit &deposit) const override
+            {
+                if (deposit.accountId() == _accountId)
+                {
+                    std::cout << "filter got one for deposit!" << std::endl;
+                }
+            }
+
+            virtual void visit(const Transfer &transfer) const override
+            {
+                if (transfer.srcAccountId() == _accountId || transfer.dstAccountId() == _accountId)
+                {
+                    std::cout << "filter got one for transfer!" << std::endl;
+                }
+            }
+
+        private:
+            std::string _accountId;
+        };
+
+        void filterAllTransactionsByAccountId(
+            const std::vector<std::unique_ptr<Transaction>> &transactions,
+            std::string accountId)
+        {
+            for (const auto &tran : transactions)
+            {
+                tran->accept(FilterTransactionByAccountId(accountId));
             }
         }
-
-        virtual void visit(const Deposit &deposit) const override
-        {
-            if (deposit.accountId() == _accountId)
-            {
-                std::cout << "filter got one for deposit!" << std::endl;
-            }
-        }
-
-        virtual void visit(const Transfer &transfer) const override
-        {
-            if (transfer.srcAccountId() == _accountId || transfer.dstAccountId() == _accountId)
-            {
-                std::cout << "filter got one for transfer!" << std::endl;
-            }
-        }
-
-    private:
-        std::string _accountId;
     };
 
-    void filterAllTransactionsByAccountId(
-        const std::vector<std::unique_ptr<Transaction>> &transactions,
-        std::string accountId)
+    namespace modern
     {
-        for (const auto &tran : transactions)
+        // functor
+        struct FilterTransactionByAccountId
         {
-            tran->accept(FilterTransactionByAccountId(accountId));
+            FilterTransactionByAccountId(std::string accountId)
+                : _accountId{accountId}
+            {
+            }
+
+            void operator()(const Withdraw &withdraw) const
+            {
+                if (withdraw.accountId() == _accountId)
+                {
+                    std::cout << "filter got one for Withdraw!" << std::endl;
+                }
+            }
+            void operator()(const Deposit &deposit) const
+            {
+                if (deposit.accountId() == _accountId)
+                {
+                    std::cout << "filter got one for Deposit!" << std::endl;
+                }
+            }
+            void operator()(const Transfer &transfer) const
+            {
+                if (transfer.srcAccountId() == _accountId ||
+                    transfer.dstAccountId() == _accountId)
+                {
+                    std::cout << "filter got one for Transfer!" << std::endl;
+                }
+            }
+
+            std::string _accountId;
+        };
+
+        void filterAllTransactionsByAccountId(
+            const std::vector<std::variant<Withdraw, Deposit, Transfer>> &transactions,
+            std::string accountId)
+        {
+            for (const auto &tran : transactions)
+            {
+                // action applied to every node
+                std::visit(FilterTransactionByAccountId(accountId), tran);
+            }
         }
-    }
+    };
 };

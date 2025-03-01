@@ -13,7 +13,11 @@ set(CMAKE_CXX_STANDARD 23)
 #GCC provides experimental support for the upcoming ISO C++ standard, C++0x. 
 #This support can be enabled with the -std=c++0x or -std=gnu++0x compiler options; 
 #the former disables GNU extensions.
-set(CMAKE_CXX_FLAGS "-std=c++0x -lstdc++fs")
+
+# -Werror: treat warning as error
+set(CMAKE_CXX_FLAGS "-std=c++0x -lstdc++fs -Wall -Wextra -fno-omit-frame-pointer")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 add_subdirectory(src bin)
 

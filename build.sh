@@ -2,16 +2,16 @@
 clear;
 
 # check build dir
-if [ ! -d build ] 
+if [ ! -d build-debug ] 
 then 
-    mkdir build 
+    mkdir build-debug
 fi
 
 # generate cmake files
-cmake -B ./build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CUDA_COMPILER=`which nvcc`
+cmake -B ./build-debug -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CUDA_COMPILER=`which nvcc`
 
 # compile project
-cmake --build ./build 
+cmake --build ./build-debug
 #--clean-first
 
 echo compilation completed!

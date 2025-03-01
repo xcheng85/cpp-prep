@@ -1,6 +1,7 @@
 #include <iostream>
 #include <openclose.h>
 #include <visitor.h>
+#include <strategy.h>
 
 int main()
 {
@@ -32,5 +33,22 @@ int main()
     transactionVariants.emplace_back(Transfer(
         "1000", "3000", 2000));
     modern::filterAllTransactionsByAccountId(transactionVariants, "1000");
+
+    // strategy
+    std::vector<std::unique_ptr<Strategy::Stable::Object>> objects;
+    auto boxRenderer = std::make_unique<Strategy::Unstable::VulkanBoxRenderer>();
+    auto sphereRenderer = std::make_unique<Strategy::Unstable::VulkanSphereRenderer>();
+
+    objects.emplace_back(std::make_unique<Strategy::Unstable::Box>(
+        10.f, 10.f, 10.f,
+        std::move(boxRenderer)));
+    objects.emplace_back(std::make_unique<Strategy::Unstable::Sphere>(
+        10.f,
+        std::move(sphereRenderer)));
+
+    for(const auto& obj : objects) {
+        obj->render();
+    }
+
     return 0;
 }

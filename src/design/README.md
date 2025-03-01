@@ -43,3 +43,8 @@ How to add more operation but adhere to OCP (without modify base class)
 ask question about wether extend type or operation
 
 visitor bad for type extension
+
+## Strategy pattern
+1. figure out all the variable point
+2. follow SRP, each variable point will be 1 abstraction
+3. good for add new types not new operations

@@ -8,6 +8,10 @@
 #include <stack>
 #include <memory>
 #include <optional>
+#include <algorithm>
+#include <numeric> // accumulate
+#include <thread>
+
 #include <common.h>
 
 namespace Command
@@ -53,9 +57,8 @@ namespace Command
     public:
         WithdrawCommand() = delete;
         explicit WithdrawCommand(double amount)
-        :_amount{amount}
+            : _amount{amount}
         {
-
         }
 
         virtual double execute(double balance) const override
@@ -76,7 +79,8 @@ namespace Command
     class BankerSession
     {
     public:
-        void login(std::string act) {
+        void login(std::string act)
+        {
             _act = act;
         }
 
@@ -124,5 +128,92 @@ namespace Command
         // unintialized double is dangerous
         double _balances{0.0};
         std::stack<std::unique_ptr<BankingCommand>> _cmdHistory;
+    };
+
+    class Command
+    {
+    public:
+        virtual ~Command() = default;
+        virtual void execute() const = 0;
+    };
+
+    template <typename T>
+    class Aggregation : public Command
+    {
+    public:
+        Aggregation() = delete;
+        Aggregation(const std::vector<T> &collection)
+            : _collection{collection}
+        {
+        }
+        virtual void execute() const
+        {
+            LOG_I(std::accumulate(_collection.begin(), _collection.end(), 0));
+        };
+
+    private:
+        const std::vector<T> &_collection;
+    };
+
+    template <typename T>
+    class MaxValue : public Command
+    {
+    public:
+        MaxValue() = delete;
+        MaxValue(const std::vector<T> &collection)
+            : _collection{collection}
+        {
+        }
+        virtual void execute() const
+        {
+            LOG_I(_collection.size());
+            LOG_I(*std::max_element(_collection.begin(), _collection.end()));
+        }
+
+    private:
+        const std::vector<T> &_collection;
+    };
+
+    class ThreadPool
+    {
+    public:
+        ThreadPool() = delete;
+        explicit ThreadPool(int cap)
+        :_cap{cap}{
+
+        }
+        ~ThreadPool()
+        {
+            for (const auto &t : _threads)
+            {
+                // avoid double join
+                if(t->joinable())
+                    t->join();
+            }
+        }
+
+        void schedule(std::unique_ptr<Command> cmd)
+        {
+            _cmds.push_back(std::move(cmd));
+            auto t = std::make_unique<std::thread>(
+                [this]()
+                {
+                    _cmds.back()->execute();
+                });
+            _threads.push_back(std::move(t));
+        }
+
+        void wait()
+        {
+            for (const auto &t : _threads)
+            {
+                t->join();
+            }
+        }
+
+    private:
+        std::vector<std::unique_ptr<std::thread>> _threads;
+        std::vector<std::unique_ptr<Command>> _cmds;
+        int _cap{0};
     };
 }

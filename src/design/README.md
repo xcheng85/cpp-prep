@@ -55,3 +55,7 @@ through concept
 ## command pattern
 command base class: invoke
 command pattern class carry state to support undo
+
+## strategy vs command pattern
+strategy: how to be done
+command: what to be done

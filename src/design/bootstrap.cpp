@@ -5,7 +5,6 @@
 #include <strategy.h>
 #include <command.h>
 
-
 int main()
 {
     using namespace OCP;
@@ -65,43 +64,50 @@ int main()
     // command pattern
     Command::BankerSession session;
     std::string act, bankcmd, amount;
-    // ctrl + D on linux/mac, Ctrl-Z on windows to exit loop
-    while (std::cin)
-    {
-        std::cin >> bankcmd;
-        transform(bankcmd.begin(), bankcmd.end(), bankcmd.begin(),
-                  ::tolower);
-        if (bankcmd == "login")
-        {
-            std::cin >> act;
-            session.login(act);
-        }
-        else if (bankcmd == "withdraw")
-        {
-            std::cin >> amount;
-            auto cmd = std::make_unique<Command::WithdrawCommand>(std::stod (amount));
-            session.apply(std::move(cmd));
-        }
-        else if (bankcmd == "deposit")
-        {
-            std::cin >> amount;
-            LOG_I(std::stod (amount));
-            auto cmd = std::make_unique<Command::DepositeCommand>(std::stod (amount));
-            session.apply(std::move(cmd));
-        }
-        else if (bankcmd == "balance")
-        {
-            session.getCurrentBalance(act);
-        }
-        else if (bankcmd == "endSession")
-        {
-            session.endSession();
-        }
-        else
-        {
-            assert(false);
-        }
-    }
+    // // ctrl + D on linux/mac, Ctrl-Z on windows to exit loop
+    // while (std::cin)
+    // {
+    //     std::cin >> bankcmd;
+    //     transform(bankcmd.begin(), bankcmd.end(), bankcmd.begin(),
+    //               ::tolower);
+    //     if (bankcmd == "login")
+    //     {
+    //         std::cin >> act;
+    //         session.login(act);
+    //     }
+    //     else if (bankcmd == "withdraw")
+    //     {
+    //         std::cin >> amount;
+    //         auto cmd = std::make_unique<Command::WithdrawCommand>(std::stod(amount));
+    //         session.apply(std::move(cmd));
+    //     }
+    //     else if (bankcmd == "deposit")
+    //     {
+    //         std::cin >> amount;
+    //         LOG_I(std::stod(amount));
+    //         auto cmd = std::make_unique<Command::DepositeCommand>(std::stod(amount));
+    //         session.apply(std::move(cmd));
+    //     }
+    //     else if (bankcmd == "balance")
+    //     {
+    //         session.getCurrentBalance(act);
+    //     }
+    //     else if (bankcmd == "endSession")
+    //     {
+    //         session.endSession();
+    //     }
+    //     else
+    //     {
+    //         assert(false);
+    //     }
+    // }
+
+    // thread pool + command
+    Command::ThreadPool tp(2);
+    std::vector<int> input{1, 1, 1};
+    tp.schedule(std::make_unique<Command::Aggregation<int>>(input));
+    tp.schedule(std::make_unique<Command::MaxValue<int>>(input));
+    tp.wait();
 
     return 0;
 }

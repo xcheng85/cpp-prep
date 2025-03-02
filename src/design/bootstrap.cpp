@@ -1,7 +1,10 @@
 #include <iostream>
+#include <algorithm>
 #include <openclose.h>
 #include <visitor.h>
 #include <strategy.h>
+#include <command.h>
+
 
 int main()
 {
@@ -45,9 +48,59 @@ int main()
     objects.emplace_back(std::make_unique<Strategy::Unstable::Sphere>(
         10.f,
         std::move(sphereRenderer)));
+    // objects.emplace_back(std::make_unique<Strategy::Unstable::StaticPoly::Box<Strategy::Unstable::VulkanBoxRenderer>>(
+    //     20.f, 20.f, 20.f,
+    //     std::move(boxRenderer)));
 
-    for(const auto& obj : objects) {
+    // objects.emplace_back(std::make_unique<Strategy::Unstable::StaticPoly::Box<Strategy::Unstable::VulkanSphereRenderer>>(
+    //     20.f,
+    //     std::move(sphereRenderer)));
+    for (const auto &obj : objects)
+    {
         obj->render();
+    }
+
+    // static strategy pattern
+
+    // command pattern
+    Command::BankerSession session;
+    std::string act, bankcmd, amount;
+    // ctrl + D on linux/mac, Ctrl-Z on windows to exit loop
+    while (std::cin)
+    {
+        std::cin >> bankcmd;
+        transform(bankcmd.begin(), bankcmd.end(), bankcmd.begin(),
+                  ::tolower);
+        if (bankcmd == "login")
+        {
+            std::cin >> act;
+            session.login(act);
+        }
+        else if (bankcmd == "withdraw")
+        {
+            std::cin >> amount;
+            auto cmd = std::make_unique<Command::WithdrawCommand>(std::stod (amount));
+            session.apply(std::move(cmd));
+        }
+        else if (bankcmd == "deposit")
+        {
+            std::cin >> amount;
+            LOG_I(std::stod (amount));
+            auto cmd = std::make_unique<Command::DepositeCommand>(std::stod (amount));
+            session.apply(std::move(cmd));
+        }
+        else if (bankcmd == "balance")
+        {
+            session.getCurrentBalance(act);
+        }
+        else if (bankcmd == "endSession")
+        {
+            session.endSession();
+        }
+        else
+        {
+            assert(false);
+        }
     }
 
     return 0;

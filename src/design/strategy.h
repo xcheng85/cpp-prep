@@ -92,5 +92,53 @@ namespace Strategy
             std::unique_ptr<VulkanSphereRenderer> _renderer;
         };
 
+        namespace StaticPoly
+        {
+            template <typename BoxRenderer>
+            class Box : public Stable::Object
+            {
+            public:
+                Box() = delete;
+                Box(float x, float y, float z,
+                    std::unique_ptr<BoxRenderer> renderer)
+                    : _renderer(std::move(renderer)),
+                      _x(x), _y(y), _z(z)
+                {
+                }
+
+                virtual void render() override
+                {
+                    _renderer->render(*this);
+                }
+
+            private:
+                float _x;
+                float _y;
+                float _z;
+
+                std::unique_ptr<BoxRenderer> _renderer;
+            };
+
+            template <typename SphereRenderer>
+            class Sphere : public Stable::Object
+            {
+            public:
+                Sphere() = delete;
+                Sphere(float r, std::unique_ptr<SphereRenderer> renderer)
+                    : _renderer(std::move(renderer)),
+                      _r(r)
+                {
+                }
+
+                virtual void render() override
+                {
+                    _renderer->render(*this);
+                }
+
+            private:
+                float _r;
+                std::unique_ptr<SphereRenderer> _renderer;
+            };
+        };
     }
 }

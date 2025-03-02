@@ -48,3 +48,10 @@ visitor bad for type extension
 1. figure out all the variable point
 2. follow SRP, each variable point will be 1 abstraction
 3. good for add new types not new operations
+
+## Strategy pattern + template meta
+through concept
+
+## command pattern
+command base class: invoke
+command pattern class carry state to support undo

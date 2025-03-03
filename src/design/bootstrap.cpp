@@ -61,6 +61,20 @@ int main()
 
     // static strategy pattern
 
+    // value-semantic strategy pattern, go interface like, no inheritance
+    {
+        std::vector<std::unique_ptr<Strategy::Stable::Object>> objects;
+        objects.emplace_back(std::make_unique<Strategy::Unstable::ValueSemantic::Box>(
+            10.f, 10.f, 10.f,
+            // functor
+            Strategy::Unstable::ValueSemantic::VulkanBoxRenderer()));
+
+        objects.emplace_back(std::make_unique<Strategy::Unstable::ValueSemantic::Sphere>(
+            10.f,
+            // functor
+            Strategy::Unstable::ValueSemantic::VulkanSphereRenderer()));
+    }
+
     // command pattern
     Command::BankerSession session;
     std::string act, bankcmd, amount;

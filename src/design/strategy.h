@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <memory>
+#include <functional>
+
+#include <common.h>
 
 // object/entity: Mesh
 // function on entity: render
@@ -140,5 +143,84 @@ namespace Strategy
                 std::unique_ptr<SphereRenderer> _renderer;
             };
         };
+
+        namespace ValueSemantic
+        {
+            class Box : public Stable::Object
+            {
+            public:
+                using BoxRenderer = std::function<void(const Box &)>;
+
+                Box() = delete;
+                Box(float x, float y, float z,
+                    BoxRenderer renderer)
+                    : _renderer(std::move(renderer)),
+                      _x(x), _y(y), _z(z)
+                {
+                }
+
+                virtual void render() override
+                {
+                    _renderer(*this);
+                }
+
+            private:
+                float _x;
+                float _y;
+                float _z;
+
+                BoxRenderer _renderer;
+            };
+
+            class Sphere : public Stable::Object
+            {
+            public:
+                using SphereRenderer = std::function<void(const Sphere &)>;
+
+                Sphere() = delete;
+                Sphere(float r, SphereRenderer renderer)
+                    : _renderer(std::move(renderer)),
+                      _r(r)
+                {
+                }
+
+                virtual void render() override
+                {
+                    _renderer(*this);
+                }
+
+            private:
+                float _r;
+                SphereRenderer _renderer;
+            };
+            // std::function and the functor
+            class VulkanBoxRenderer
+            {
+            public:
+                void operator()(const Box &box)
+                {
+                    LOG_I("VulkanBoxRenderer::operator()");
+                }
+            };
+
+            class GLBoxRenderer
+            {
+            public:
+                void operator()(const Box &box)
+                {
+                    LOG_I("GLBoxRenderer::operator()");
+                }
+            };
+
+            class VulkanSphereRenderer
+            {
+            public:
+                void operator()(const Sphere &box)
+                {
+                    LOG_I("VulkanSphereRenderer::operator()");
+                }
+            };
+        }
     }
+
 }

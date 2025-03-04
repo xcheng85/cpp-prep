@@ -4,6 +4,9 @@
 #include <visitor.h>
 #include <strategy.h>
 #include <command.h>
+#include <observer.h>
+#include <bridge.h>
+#include <decorator.h>
 
 int main()
 {
@@ -123,5 +126,26 @@ int main()
     tp.schedule(std::make_unique<Command::MaxValue<int>>(input));
     tp.wait();
 
+    // observer
+    Observer::Unstable::Player p{
+        "Damian",
+        "Lillard",
+        0};
+    auto playerObserver = std::make_shared<Observer::Unstable::PlayerObserver>("obs1");
+    auto playerSub = std::make_unique<Observer::Stable::Subject<Observer::Unstable::Player>>(std::move(p));
+    playerSub->attach(playerObserver);
+
+    // bridge pattern (PIMP)
+
+    // decorator
+    std::unique_ptr<Decorator::IObject> dame{
+        std::make_unique<Decorator::Injured>(1.05,
+                                               std::make_unique<Decorator::Player>("Damian Lillard", 90))};
+    std::unique_ptr<Decorator::IObject> khris{
+        std::make_unique<Decorator::HotStreak>(0.88,
+                                               std::make_unique<Decorator::Player>("Khris Middleton", 80))};
+
+    LOG_I(dame->score());
+    LOG_I(khris->score());
     return 0;
 }

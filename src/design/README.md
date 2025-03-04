@@ -62,3 +62,39 @@ command: what to be done
 
 ## strategy pattern without using runtime polymorphism
 use std::function
+
+std::function performance issue in gcc
+and re-implemented with Type Erasure
+
+
+## Adapter pattern
+stack: adapter deque
+queue: adapter deque
+pq: adapter vector
+
+
+object adapter: based on composition, good, template 
+class adapter: based on inheritance, bad
+function adapter: based on function overload
+
+## observer pattern
+
+event: job added to the queue, config change
+
+decouple from event and observer, redis
+
+1 to N: 
+
+single responsibility: a subject that changed 
+
+## Bridge Pattern
+hide detail, avoid re-compilaition
+pimp: ptr imp idiom
+ABI: application binary interface stability
+
+## Prototype Pattern, clone the right object in the hierachy chain
+
+## Decorator Pattern
+flexible combination of different function through composition
+every layer of decorator is SRP
+and OCP

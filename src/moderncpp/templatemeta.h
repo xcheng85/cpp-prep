@@ -157,4 +157,35 @@ namespace TemplateMeta
         // array literal
         Texture2Df t1(128);
     }
+
+    // variadic
+    // perfect forwarding l/rvalue
+    // compile-time computation
+    // recurisve, base case
+
+    // factorial
+    // non-type template parameter
+    template <int f>
+    class FactorialFunctor
+    {
+    public:
+        int operator()()
+        {
+            return f * FactorialFunctor<f - 1>()();
+        }
+    };
+    template <>
+    class FactorialFunctor<0>
+    {
+    public:
+        int operator()()
+        {
+            return 1;
+        }
+    };
+
+    constexpr void testCompileFactorial()
+    {
+        LOG_I(FactorialFunctor<5>()());
+    }
 }

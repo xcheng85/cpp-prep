@@ -90,6 +90,7 @@ int main()
     SyncExec("TemplateMeta::testTemplateMeta()", TemplateMeta::testTemplateMeta);
     // std::this_thread::sleep_for(10s);
     SyncExec("TemplateMeta::testTemplateRecursiveClass()", TemplateMeta::testTemplateRecursiveClass);
+    SyncExec("TemplateMeta::testCompileFactorial()", TemplateMeta::testCompileFactorial);
 
     return 0;
 }

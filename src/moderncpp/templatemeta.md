@@ -6,3 +6,4 @@ template metapgramming with c++
 2. CRTP
 3. Expression teimplates
 4. SFINAE and conditional compilation
+

@@ -1,11 +1,16 @@
 #pragma once
 #include <cstring>
 #include <vector>
-#include <shared.h>
 #include <typeinfo>
+#include <string_view>
+#include <thread>
+#include <chrono>
 
+#include <shared.h>
 namespace Strings
 {
+    using namespace std::string_literals;
+    using namespace std::chrono_literals;
     void testCString()
     {
         const char str[]{"Dame"};
@@ -22,7 +27,6 @@ namespace Strings
 
     void testClassTemplateArgumentDeduction()
     {
-        using namespace std::string_literals;
 
         std::vector players{"Giannis"};
         std::vector players2{"Giannis"s};
@@ -30,5 +34,24 @@ namespace Strings
         LOG_TRACE_I("Argument Deduction for c str", typeid(players).name());
         // St6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE
         LOG_TRACE_I("Argument Deduction for std str", typeid(players2).name());
+    }
+
+    // value of string_view
+    // disallow rvalue
+    void testBeforeStringViewRvalue(std::string &s)
+    {
+        LOG_TRACE_I("testBeforeStringView"s, s);
+    }
+
+    void testAfterStringView(std::string_view sv)
+    {
+        LOG_TRACE_I("testAfterStringView"s, sv);
+    }
+
+    void testStringViewDanglingPtr(std::string_view sv)
+    {
+        std::this_thread::sleep_for(1s);
+        // and the caller will release the string behind sv
+        LOG_TRACE_I("testStringViewDanglingPtr"s, sv);
     }
 }

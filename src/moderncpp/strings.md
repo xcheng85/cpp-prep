@@ -102,3 +102,8 @@ func Contains(str, substr string) bool
 
 
 ```
+
+## string_view vs string
+
+string_view good: avoid copy
+string_view bad: dangling ptr

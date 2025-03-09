@@ -27,3 +27,8 @@ and store pointer in stl container
 ## auto cast away const reference create copy, const auto& 
 ## decltype(auto) keep const and reference
 
+
+
+## smart pointers
+
+### weaker pointer to Dealing with Circular References

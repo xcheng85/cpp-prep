@@ -12,7 +12,8 @@ namespace banking
     class Withdraw;
     class Deposit;
     class Transfer;
-    // base class for all extensible ops
+
+    // base class for all extensible operations
     class TransactionVisitor
     {
     public:

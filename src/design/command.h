@@ -24,6 +24,7 @@ namespace Command
         virtual ~BankingCommand() = default;
         // balance
         // like angular state mutation, stateless, return new state
+        // externall pass state in, command only do state action change
         virtual double execute(double balance) const = 0;
         virtual double undo(double balance) const = 0;
     };
@@ -90,6 +91,7 @@ namespace Command
             auto act = _act.value();
             // check act exceptions, todo
             // ngrx state mutation
+            // SRP for command
             _balances = command->execute(_balances);
             LOG_I(_balances);
             // ownership transfer

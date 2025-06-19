@@ -9,7 +9,7 @@
 // object/entity: Mesh
 // function on entity: render
 // function variation: solid/wireframe/point
-
+BoxRenderer
 namespace Strategy
 {
     namespace Stable

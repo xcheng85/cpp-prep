@@ -8,3 +8,4 @@ add_subdirectory(multiple_connection_promise)
 add_subdirectory(shared_future_deps)
 add_subdirectory(fp_concurrent)
 add_subdirectory(csp)
+add_subdirectory(pubsub) #push model, redis consumer group, pull model

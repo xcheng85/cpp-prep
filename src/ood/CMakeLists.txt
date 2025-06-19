@@ -1,1 +1,2 @@
 add_subdirectory(domainEntity)
+add_subdirectory(banking)

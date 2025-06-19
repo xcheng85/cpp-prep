@@ -8,6 +8,7 @@
 #include <memory>
 #include <smartpointer.h>
 #include <templatemeta.h>
+#include <concurrent.h>
 
 using namespace std::string_literals;
 using namespace std::chrono_literals;
@@ -87,10 +88,16 @@ int main()
         // should report missing of observers
         sub->notify(SmartPointers::EDA::Event());
     }
+
+    SyncExec("SmartPointers::testCustomUniquePtr()", SmartPointers::testCustomUniquePtr);
+    SyncExec("SmartPointers::testCustomSharedPtr()", SmartPointers::testCustomSharedPtr);
+
     SyncExec("TemplateMeta::testTemplateMeta()", TemplateMeta::testTemplateMeta);
     // std::this_thread::sleep_for(10s);
     SyncExec("TemplateMeta::testTemplateRecursiveClass()", TemplateMeta::testTemplateRecursiveClass);
     SyncExec("TemplateMeta::testCompileFactorial()", TemplateMeta::testCompileFactorial);
+
+    SyncExec("Concurrent::testFunctorDataContention()", Concurrent::testFunctorDataContention, 10000);
 
     return 0;
 }

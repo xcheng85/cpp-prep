@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread_factory.h>
 #include <logger.h>
+#include <signal.h>
 #include <queuethreadsafe.h>
 
 using namespace std::chrono;
@@ -13,6 +14,12 @@ using namespace core::container;
 
 int main(int argc, char **argv)
 {
+    signal(SIGTERM, [](int sig)
+           {
+               cout << "tear down" << endl;
+               abort(); // with core dump
+           });
+
     auto &logger = DefaultLogger::Instance();
     logger.setLogLevel(LogLevel::DEBUG);
     // mimic redis/kafka stream
@@ -24,7 +31,7 @@ int main(int argc, char **argv)
 
     // use lamda to wrap around stream to add audit/observability
     const auto XGROUPCREATECONSUMER = [&]()
-    {   
+    {
         // mimic a consumer keep polling
         while (true)
         {

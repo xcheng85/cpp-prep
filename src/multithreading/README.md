@@ -1,18 +1,13 @@
 # Multithreading in C++
 system-level concurrency: offered by os
-
 higher-level concurrency: go-routine
-
 memory-model of multi-threading
-
 
 ## Journey of thread's sync primitives
 mutex (all kinds of) ---> generic lock (use of mutex easier) ---> conditional variable
 
 ## RAII class in thread
 jthread: wrapper on top of std::thread
-
-
 lock_guard: wrapper on top of mutex, calling mutex.lock in ctor and unlock in dtor
 unique_lock: wrapper on top of mutex, not calling mutex.lock in ctor is an extra option
 
@@ -80,7 +75,7 @@ N threads + 1 shared io context
 thread is system representation of task
 
 ### 2. conceptual level vs lower-level
-level level: thread, lock
+lower level: thread, lock
 conceptual level: future, promise, packaged_task
 
 ### 3. transfer ownership 
@@ -139,14 +134,11 @@ packaged_task: wrapper
 
 ## packaged_task vs async() launch
 async cannot use lock
-
-
 lock-free: atomic
 
 ### atomic
 <atomic>
 template struct
-
 
 lock-free queue for inter-thread communication
 
@@ -171,7 +163,6 @@ the interface of stl single-threaded version is quite limited
 
 
 ## Q&A
-
 
 ### problem1: dangling pointer/reference in task of a thread
 
@@ -224,7 +215,6 @@ use bpop in thread-safe queue as example:
 
 1. thread-based impl: cv, unique_lock, wait, predict
 2. task-based impl: future and blocking get call.
-
 
 
 future with global func
@@ -285,10 +275,6 @@ promise.then.catch
 
 ## libraries
 taskflow: dependency graph
-
-
-
-
 
 
 C++:
@@ -363,8 +349,6 @@ mimic redis/kafka
 ### future + daemon threads
 
 ### promise functor and class template: packaged_task + future
-
-
 
 ## Memory pool
 
